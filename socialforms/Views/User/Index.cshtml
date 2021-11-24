@@ -1,0 +1,32 @@
+﻿@*
+    model ... hier wird der datentyp in dieser View angegeben
+     dieser muss mit dem Datentyp der Instanzvariable, welche an die View übergeben wurde, übereinstimmen
+
+*@
+
+@model socialforms.Models.User
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+@if (Model != null)
+{
+    <p>
+        Userdaten
+    </p>
+    <p>
+        @Model.PersonId<br />
+        @Model.Username <br />
+        @Model.Birthdate.ToLongDateString()
+    </p>
+}
+else
+{
+    <p>
+        Es wurden keine Userdaten übergeben!
+    </p>
+}
+
+<h1>Index</h1>
