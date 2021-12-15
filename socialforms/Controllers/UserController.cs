@@ -7,19 +7,14 @@ using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
     public class UserController : Controller {
+        public IActionResult index() {
+            return View();
+        }
+
         public IActionResult Login()
         {
             return View();
         }
-
-        [HttpGet]
-        public IActionResult Registration()
-        {
-            User u = new User();
-            //übergeben an die View
-            return View(u);
-        }
-
         [HttpPost]
         public IActionResult Registration(User userDataFromForm)
         {
