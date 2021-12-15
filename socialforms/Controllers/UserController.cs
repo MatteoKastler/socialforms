@@ -2,6 +2,7 @@
 using socialforms.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -69,7 +70,10 @@ namespace socialforms.Controllers {
             }
 
             //Birthdate
-
+            /*if (DateTime.TryParseExact(str, "MM/dd/yyyy", null, DateTimeStyles.None, u.Birthdate) == true)
+            {
+                ModelState.AddModelError("Birthdate", "Bitte ein gültiges Datum im Format MM/dd/yyyy eingeben");
+            }*/
         }
     }
    
