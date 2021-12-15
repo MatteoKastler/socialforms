@@ -17,28 +17,24 @@ namespace socialforms.Controllers {
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Registration() {
+            return View();
+        }
         [HttpPost]
-        public IActionResult Registration(User userDataFromForm)
-        {
-            //Parameter überprüfen
-            if (userDataFromForm == null)
-            {
+        public IActionResult Registration(User userDataFromForm) {
+            if (userDataFromForm == null) {
                 return RedirectToAction("Registration");
             }
 
             ValidateRegistrationData(userDataFromForm);
 
-            if (ModelState.IsValid)
-            {
-          
+            if (ModelState.IsValid) {
+
 
                 return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
-            
+
             }
-
-          
-
-
             return View(userDataFromForm);
         }
 
