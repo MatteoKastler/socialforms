@@ -3,6 +3,7 @@ using socialforms.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
@@ -29,19 +30,17 @@ namespace socialforms.Controllers {
                 return RedirectToAction("Registration");
             }
 
-            //Formulardaten überprüfen (Validierung - serverseitig)
             ValidateRegistrationData(userDataFromForm);
 
-            //alle Daten des Formulars sind richtig
             if (ModelState.IsValid)
             {
-                //in DB-Tabelle abspeichern
+          
 
                 return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
-                //Falls die Validierung nicht erfolgreich war, wird das Formular mit dem eingeg. daten befüllt und wieder angezeigt
+            
             }
 
-            //TODO: in DB-Tabelle abspeichern
+          
 
 
             return View(userDataFromForm);
@@ -65,11 +64,17 @@ namespace socialforms.Controllers {
             {
                 ModelState.AddModelError("Password", "Das Password muss mindestens 8 Zeichen lang sein");
             }
-            //min ein Kleinbuchstabe, ein Großbuchstabe, ein Sonderzeichen und eine Zahl
+
+            //EMail
+            string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+
+            if (Regex.IsMatch(pattern, u.EMail))
+            {
+                ModelState.AddModelError("Password", "Bitte geben sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
+            }
 
             //Birthdate
 
-            //EMail
         }
     }
    
