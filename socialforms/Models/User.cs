@@ -27,6 +27,29 @@ namespace socialforms.Models
         public String Password { get; set; }
         public DateTime Birthdate { get; set; }
 
+        public string EMail { get; set; }
+
+        public Gender Gender { get; set; }
+
+        public User(int id, string username, string passsword, DateTime birthdate, string email, Gender gender)
+        {
+            PersonId = id;
+            Username = username;
+            Password = passsword;
+            Birthdate = birthdate;
+            EMail = email;
+            Gender = gender;
+        }
+
+        public User()
+        {
+        }
+
+        public override string ToString()
+        {
+            return PersonId + "\n" + Username + "\n" + Password + "\n" + Birthdate.ToLongDateString();
+        }
+
 
     }
 }

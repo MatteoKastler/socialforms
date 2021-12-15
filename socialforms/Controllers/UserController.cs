@@ -1,16 +1,92 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using socialforms.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
-    public class UserController : Controller { 
-        public IActionResult Login() {
-            return View();
+    public class UserController : Controller {
+        User user = new User()
+        {
+            PersonId = 1000,
+            Username = "Noah",
+            Password = "Sesam123",
+            Birthdate = new DateTime(2004, 4, 13),
+            EMail = "noah.blabla@xyz.com",
+            Gender = Gender.notSpecified,
+
+
+        };
+
+            //normalerweise würden die Daten des Users aus der DB-Tabelle geladen
+
+            //user an die Methode View() übergeben
+            return View(user);
+    }
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public IActionResult Registration()
+    {
+        User u = new User();
+        //übergeben an die View
+        return View(u);
+    }
+
+    [HttpPost]
+    public IActionResult Registration(User userDataFromForm)
+    {
+        //Parameter überprüfen
+        if (userDataFromForm == null)
+        {
+            return RedirectToAction("Registration");
         }
-        public IActionResult Registration() {
-            return View();
+
+        //Formulardaten überprüfen (Validierung - serverseitig)
+        ValidateRegistrationData(userDataFromForm);
+
+        //alle Daten des Formulars sind richtig
+        if (ModelState.IsValid)
+        {
+            //in DB-Tabelle abspeichern
+
+            return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
+            //Falls die Validierung nicht erfolgreich war, wird das Formular mit dem eingeg. daten befüllt und wieder angezeigt
         }
+
+        //TODO: in DB-Tabelle abspeichern
+
+
+        return View(userDataFromForm);
+    }
+
+    private void ValidateRegistrationData(User u)
+    {
+        if (u == null)
+        {
+            return;
+        }
+
+        //Username
+        if ((u.Username == null) || (u.Username.Trim().Length < 4))
+        {
+            ModelState.AddModelError("Username", "Der Benutzername muss mind. 4 Zeichen lang sein!");
+        }
+
+        //Passwort
+        if ((u.Password != null) || (u.Password.Length < 8))
+        {
+            ModelState.AddModelError("Password", "Das Password muss mindestens 8 Zeichen lang sein");
+        }
+        //min ein Kleinbuchstabe, ein Großbuchstabe, ein Sonderzeichen und eine Zahl
+
+        //Birthdate
+
+        //EMail
     }
 }
+
