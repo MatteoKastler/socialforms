@@ -5,7 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
-    public class UserController : Controller { 
+    public class UserController : Controller {
+
+        public IActionResult Index() {
+            return View();
+        }
         public IActionResult Login() {
             return View();
         }
