@@ -22,8 +22,13 @@ namespace socialforms.Controllers {
         public IActionResult Registration() {
             return View();
         }
+        [HttpGet]
+        public IActionResult Settings()
+        {
+            return View();
+        }
 
-     
+
 
         [HttpPost]
         public IActionResult Registration(User userDataFromForm) {
@@ -58,6 +63,16 @@ namespace socialforms.Controllers {
 
                 return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
 
+            }
+            return View(userDataFromForm);
+        }
+
+        [HttpPost]
+        public IActionResult Settings(User userDataFromForm)
+        {
+            if (userDataFromForm == null)
+            {
+                return RedirectToAction("Settings");
             }
             return View(userDataFromForm);
         }
