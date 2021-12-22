@@ -13,6 +13,7 @@ namespace socialforms.Controllers {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -21,6 +22,9 @@ namespace socialforms.Controllers {
         public IActionResult Registration() {
             return View();
         }
+
+     
+
         [HttpPost]
         public IActionResult Registration(User userDataFromForm) {
             if (userDataFromForm == null) {
@@ -37,6 +41,29 @@ namespace socialforms.Controllers {
             }
             return View(userDataFromForm);
         }
+
+        [HttpPost]
+        public IActionResult Login(User userDataFromForm)
+        {
+            if (userDataFromForm == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            ValidateRegistrationData(userDataFromForm);
+
+            if (ModelState.IsValid)
+            {
+
+
+                return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
+
+            }
+            return View(userDataFromForm);
+        }
+
+
+
 
         private void ValidateRegistrationData(User u)
         {

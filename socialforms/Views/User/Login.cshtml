@@ -1,7 +1,23 @@
-﻿
+﻿@model socialforms.Models.User
 @{
     ViewData["Title"] = "Login";
 }
 
 <h1>Login</h1>
 
+<form asp-controller="user" asp-action="registration" method="post">
+    <p>
+        <label asp-for="Username" /> <br />
+        <input type="text" asp-for="Username" />
+        <span asp-validation-for="Username"></span>
+    </p>
+    <p>
+        <label asp-for="Password" /> <br />
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </p>
+    <p>
+        <input type="submit" value="absenden" />
+        <input type="reset" value="zurücksetzen" />
+    </p>
+</form>>
