@@ -10,24 +10,26 @@
     ViewData["Title"] = "User";
 }
 
-<h2>Index</h2>
-@if (Model != null)
-{
-    <p>
-        Userdaten
-    </p>
-    <p>
-        @Model.PersonId<br />
-        @Model.Username <br />
-        @Model.Username <br />
-        @Model.Birthdate.ToLongDateString()
-    </p>
-}
-else
-{
-    <p>
-        Es wurden keine Userdaten übergeben!
-    </p>
-}
-
-<h1>Index</h1>
+<head>
+    @if (Model == null) {
+    <meta http-equiv="Refresh" content="0; url='/user/registration'" />
+    }
+</head>
+<body>
+    <h2>Index</h2>
+    @if (Model != null) {
+        <p>
+            Userdaten
+        </p>
+        <p>
+            @Model.PersonId<br />
+            @Model.Username <br />
+            @Model.Username <br />
+            @Model.Birthdate.ToLongDateString()
+        </p>
+    } else {
+        <p>
+            Es wurden keine Userdaten übergeben!
+        </p>
+    }
+</body>
