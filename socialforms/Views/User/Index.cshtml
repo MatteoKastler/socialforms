@@ -10,12 +10,12 @@
     ViewData["Title"] = "User";
 }
 
-<head>
+   
+@section redirect{
     @if (Model == null) {
-    <meta http-equiv="Refresh" content="0; url='/user/registration'" />
+        <meta http-equiv="Refresh" content="0; url='/user/registration'" />
     }
-</head>
-<body>
+}
     <h2>Index</h2>
     @if (Model != null) {
         <p>
@@ -32,4 +32,3 @@
             Es wurden keine Userdaten übergeben!
         </p>
     }
-</body>
