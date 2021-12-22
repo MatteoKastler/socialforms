@@ -12,20 +12,25 @@
 
    
 @section redirect{
-    @if (Model == null) {
-        <meta http-equiv="Refresh" content="0; url='/user/registration'" />
+    @if (Model != null) {  //change back to == when done testing
+        <meta http-equiv="Refresh" content="0; url='/user/login'" />
     }
 }
-    <h2>Index</h2>
-    @if (Model != null) {
+    @if (Model == null) { //change back to != when done testing
         <p>
-            Userdaten
-        </p>
-        <p>
-            @Model.PersonId<br />
-            @Model.Username <br />
-            @Model.Username <br />
-            @Model.Birthdate.ToLongDateString()
+            <div class="card" style="width:400px">
+                <img class="card-img-top" src="/res/Download.jpg" alt="Card image" style="width:100%">
+                <div class="card-body">
+                    <h4 class="card-title">Name des lamas hier</h4>
+                    <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+                </div>
+            </div>
+
+            @*Model.PersonId<br />
+        @Model.Username <br />
+        @Model.Username <br />
+        @Model.Birthdate.ToLongDateString()*@
+
         </p>
     } else {
         <p>
