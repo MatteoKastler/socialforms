@@ -10,30 +10,93 @@
     ViewData["Title"] = "User";
 }
 
-   
+
 @section redirect{
-    @if (Model != null) {  //change back to == when done testing
+    @if (Model != null)
+    {  //change back to == when done testing
         <meta http-equiv="Refresh" content="0; url='/user/login'" />
     }
 }
-    @if (Model == null) { //change back to != when done testing
-        <p>
-            <div class="card" style="width:400px">
-                <img class="card-img-top" src="/res/Download.jpg" alt="Card image" style="width:100%">
-                <div class="card-body">
-                    <h4 class="card-title">Name des lamas hier</h4>
-                    <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-                </div>
-            </div>
+@if (Model == null)
+{ //change back to != when done testing
+<p>
+    <div class="card" style="width:400px">
+        <img class="card-img-top" src="/res/Download.jpg" alt="Card image" style="width:100%">
+        <div class="card-body">
+            <h4 class="card-title">Name des Lamas hier   <a href=/user/settings class="btn btn-primary" target="_blank" rel="noopener noreferrer">Settings</a></h4>
+
+            <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+        </div>
+    </div>
+    <!--  @if (Model.Count < 1)
+            {
+                <p>
+                    Es sind keine User in der Tabelle vorhanden
+                </p>
+            }
+            else
+            {
+            @* alle User in Tabellenform ausgeben *@
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="7">Meine Umfragen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Erstellungsdatum</th>
+                        <th>Anzahl der Fragen</th>
+                        <th>Anzahl der Antworten</th>
+                        <th>Geschlecht</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (Form f in Model)
+                    {
+                        <tr>
+                            <td>@u.PersonId</td>
+                            <td>@u.Username</td>
+                            <td>@u.EMail</td>
+                            <td>@u.Birthdate.ToLongDateString()</td>
+                            <td>@u.Gender</td>
+
+                            <td>
+                                @* senden an den User-Controller und dort an die Action (Methode) delete*@
+                                <form action="/user/delete/@u.PersonId" method="get">
+                                    <input type="submit" value="löschen" />
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/user/update/@u.PersonId" method="get">
+                                    <input type="submit" value="ändern" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5">Formverwaltung</th>
+                    </tr>
+                </tfoot>
+            </table>
+        }
 
             @*Model.PersonId<br />
-        @Model.Username <br />
-        @Model.Username <br />
-        @Model.Birthdate.ToLongDateString()*@
+                @Model.Username <br />
+                @Model.Username <br />
+                @Model.Birthdate.ToLongDateString()*@
 
-        </p>
-    } else {
-        <p>
-            Es wurden keine Userdaten übergeben!
-        </p>
-    }
+            </p>
+        }
+        else
+        {
+            <p>
+                Es wurden keine Userdaten übergeben!
+            </p>
+        }
+    -->

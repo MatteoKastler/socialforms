@@ -6,14 +6,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\NewFolder1\**" />
+    <Compile Remove="Models\NewFolder2\**" />
+    <Compile Remove="Models\NewFolder\**" />
     <Compile Remove="Views\Shared\User\**" />
+    <Content Remove="Models\NewFolder1\**" />
+    <Content Remove="Models\NewFolder2\**" />
+    <Content Remove="Models\NewFolder\**" />
     <Content Remove="Views\Shared\User\**" />
+    <EmbeddedResource Remove="Models\NewFolder1\**" />
+    <EmbeddedResource Remove="Models\NewFolder2\**" />
+    <EmbeddedResource Remove="Models\NewFolder\**" />
     <EmbeddedResource Remove="Views\Shared\User\**" />
+    <None Remove="Models\NewFolder1\**" />
+    <None Remove="Models\NewFolder2\**" />
+    <None Remove="Models\NewFolder\**" />
     <None Remove="Views\Shared\User\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Models\DB\sql\sql_script.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\DB\sql\" />
   </ItemGroup>
 
 </Project>
