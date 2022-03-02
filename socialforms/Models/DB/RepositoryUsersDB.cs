@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace socialforms.Models.DB
 {
@@ -15,7 +13,7 @@ namespace socialforms.Models.DB
         DbConnection _conn;
 
 
-        public void Connect()
+       public void Connect()
         {
             if(this._conn == null)
             {   //wird sie erzeugen 
@@ -25,7 +23,7 @@ namespace socialforms.Models.DB
             {   //wird sie öffnen
                 this._conn.Open();
             }
-        }
+        } 
 
         public bool Delete(int userId)
         {

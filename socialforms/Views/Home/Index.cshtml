@@ -1,7 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@*
+    model... hier wird der Datentyp in dieser View angegeben, dieser muss mit dem Datentyp
+             der Instanzvariable, welche an die View übergeben wurde, übereinstimmen
+
+        es wird eine strongly typed view erzeugt
+        (streng typisierte View)
+
+*@
+@model List<socialforms.Models.User>
+
+
+@{
+    ViewData["Title"] = "Alle Benutzer";
 }
 
-<div class="text-left">
-    <h1 class="display-4">hier sind deine letzten Aktivitäten</h1>
-</div>
+<h1>Index</h1>
+
+
+@if (Model.Count < 1)
+{
+    <p>
+        Sie haben noch kein Form erstellt.
+    </p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th colspan="7">alle Benutzer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Benutzer_ID</th>
+                <th>Benutzername</th>
+                <th>Email</th>
+                <th>Geburtsdatum</th>
+                <th>Geschlecht</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (User u in Model)
+            {
+                <tr>
+                    <td>@u.PersonId</td>
+                    <td>@u.Username</td>
+                    <td>@u.EMail</td>
+                    <td>@u.Birthdate.ToLongDateString()</td>
+                    <td>@u.Gender</td>
+                    <td>
+                        @*senden an den User-Controller und dort an die Action (Methode) delete*@
+                        <form action="/user/delete/@u.PersonId" method="get">
+                            <input type="submit" value="delete" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/user/update/@u.PersonId" method="get">
+                            <input type="submit" value="update" />
+                        </form>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="7">Benutzerverwaltung</th>
+            </tr>
+        </tfoot>
+
+    </table>
+}
+
