@@ -1,11 +1,70 @@
 ﻿@*
-    model ... hier wird der datentyp in dieser View angegeben
-     dieser muss mit dem Datentyp der Instanzvariable, welche an die View übergeben wurde, übereinstimmen
+    model... hier wird der Datentyp in dieser View angegeben, dieser muss mit dem Datentyp
+             der Instanzvariable, welche an die View übergeben wurde, übereinstimmen
+
+        es wird eine strongly typed view erzeugt
+        (streng typisierte View)
 
 *@
+@model List<socialforms.Models.Form>
 
-@model socialforms.Models.User;
 
 @{
-    ViewData["Title"] = "User";
+    ViewData["Title"] = "Deine socialforms";
+}
+
+<h1></h1>
+
+
+@if (Model.Count < 1)
+{
+    <p>
+        Du hast noch kein socialform erstellt!! Jetzt erstellen?
+    </p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th colspan="7">alle Benutzer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Anzahl der Fragen</th>
+                <th>Abgegebene Antworten</th>
+                <th>Datum erstellt</th>
+            </tr>
+
+            @foreach (Form f in Model)
+            {
+                <tr>
+                    <td>@f.Name</td>
+                    <td>@f.NumQst</td>
+                    <td>@f.DateCreated</td>
+                    <td>
+                        @*senden an den User-Controller und dort an die Action (Methode) delete*@
+                        <form action="/form/delete/@f.FormId" method="get">
+                            <input type="submit" value="delete" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/form/update/@f.FormId" method="get">
+                            <input type="submit" value="update" />
+                        </form>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="7">Forms verwalten</th>
+            </tr>
+        </tfoot>
+
+    </table>
+
 }

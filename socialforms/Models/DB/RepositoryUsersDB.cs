@@ -8,7 +8,7 @@ namespace socialforms.Models.DB
 {
     public class RepositoryUsersDB : IRepositoryUsers
     {   //Verbindung für den MySQL-Server
-        private string _connString = "Server=localhost;database=web_4a_g1;user=root;password=tigerchen20";
+        private string _connString = "Server=localhost;database=;user=root;password=MBigubb75#";
         // Instanz/Objekt für den Zugriff auf den MySQL-Server
         DbConnection _conn;
 
