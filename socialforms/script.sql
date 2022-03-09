@@ -4,9 +4,9 @@ USE socialforms;
 CREATE TABLE users(
     userId INT NOT NULL AUTO_INCREMENT,
     userName VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    pass VARCHAR(385) NOT NULL, --hier muss ein hash rein dies das, kein Klartext
+    pass VARCHAR(385) NOT NULL,
     birthDate DATE,
+    email VARCHAR(255) NOT NULL,--hier muss ein hash rein dies das, kein Klartext
     gender INT,
     userDescription VARCHAR(1024),
     picture MEDIUMBLOB,
