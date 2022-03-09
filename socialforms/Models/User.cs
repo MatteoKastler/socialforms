@@ -31,7 +31,10 @@ namespace socialforms.Models
 
         public Gender Gender { get; set; }
 
-        public User(int id, string username, string passsword, DateTime birthdate, string email, Gender gender)
+        public String UserDescription { get; set; }
+
+   
+        public User(int id, string username, string passsword, DateTime birthdate, string email, Gender gender, string userDescription)
         {
             PersonId = id;
             Username = username;
@@ -39,6 +42,8 @@ namespace socialforms.Models
             Birthdate = birthdate;
             Email = email;
             Gender = gender;
+            UserDescription = userDescription;
+
         }
 
         public User()
