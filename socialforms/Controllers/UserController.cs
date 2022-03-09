@@ -102,7 +102,7 @@ namespace socialforms.Controllers {
             //EMail
             string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
 
-            if (Regex.IsMatch(pattern, u.EMail))
+            if (Regex.IsMatch(pattern, u.Email))
             {
                 ModelState.AddModelError("Password", "Bitte geben sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
