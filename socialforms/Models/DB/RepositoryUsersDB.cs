@@ -81,7 +81,7 @@ namespace socialforms.Models.DB
                         Username = Convert.ToString(reader["username"]),
                         Birthdate = Convert.ToDateTime(reader["birthdate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
-                        EMail = Convert.ToString(reader["email"])
+                        Email = Convert.ToString(reader["email"])
                         // Passwort wird nicht ausgelesen
                     });
                 }
@@ -134,7 +134,7 @@ namespace socialforms.Models.DB
             DbParameter paramEMail = cmdInsert.CreateParameter();
             paramEMail.ParameterName = "mail";
             paramEMail.DbType = DbType.String;
-            paramEMail.Value = user.EMail;
+            paramEMail.Value = user.Email;
 
             DbParameter paramGender = cmdInsert.CreateParameter();
             paramGender.ParameterName = "gender";
@@ -190,7 +190,7 @@ namespace socialforms.Models.DB
             DbParameter paramEMail = cmdUpdate.CreateParameter();
             paramEMail.ParameterName = "mail";
             paramEMail.DbType = DbType.String;
-            paramEMail.Value = newUserData.EMail;
+            paramEMail.Value = newUserData.Email;
 
             DbParameter paramGender = cmdUpdate.CreateParameter();
             paramGender.ParameterName = "gender";
