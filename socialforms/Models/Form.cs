@@ -9,7 +9,7 @@ namespace socialforms.Models
     {
         private int _formId;
 
-        public int formId
+        public int FormId
         {
             get { return this._formId; }
             set
@@ -23,7 +23,7 @@ namespace socialforms.Models
 
         private int _userId;
 
-        public int userId
+        public int UserId
         {
             get { return this._userId; }
             set
@@ -35,9 +35,9 @@ namespace socialforms.Models
             }
         }
 
-        public String formName { get; set; }
+        public String FormName { get; set; }
 
-        public DateTime createDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         
 

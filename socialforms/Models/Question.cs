@@ -23,7 +23,7 @@ namespace socialforms.Models
 
         private int _formId;
 
-        public int formId
+        public int FormId
         {
             get { return this._formId; }
             set
@@ -34,6 +34,12 @@ namespace socialforms.Models
                 }
             }
         }
+
+        public String Qtext {get; set; }
+
+        public int QuestionType { get; set; }
+
+
 
 
     }

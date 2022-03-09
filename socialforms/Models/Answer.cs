@@ -9,7 +9,7 @@ namespace socialforms.Models
     {
         private int _answerId;
 
-        public int answerId
+        public int AnswerId
         {
             get { return this._answerId; }
             set
@@ -23,7 +23,7 @@ namespace socialforms.Models
 
         private int _questionId;
 
-        public int questionId
+        public int QuestionId
         {
             get { return this._questionId; }
             set
@@ -37,7 +37,7 @@ namespace socialforms.Models
 
         private int _userId;
 
-        public int userId
+        public int UserId
         {
             get { return this._userId; }
             set
@@ -49,8 +49,8 @@ namespace socialforms.Models
             }
         }
 
-        public String textAnswer { get; set; }
-        public int choiceAnswer { get; set; }
+        public String TextAnswer{ get; set; }
+        public int ChoiceAnswer { get; set; }
 
 
     }
