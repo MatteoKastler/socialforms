@@ -7,6 +7,7 @@ CREATE TABLE users(
     email VARCHAR(255) NOT NULL,
     pass VARCHAR(385) NOT NULL, --hier muss ein hash rein dies das, kein Klartext
     birthDate DATE,
+    gender INT,
     userDescription VARCHAR(1024),
     picture MEDIUMBLOB,
 

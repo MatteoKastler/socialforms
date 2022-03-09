@@ -25,7 +25,7 @@ namespace socialforms.Models.DB
             }
         } 
 
-        public bool Delete(int userId)
+        public bool Delete(int uID)
         {
             //falls die Verb. nicht existiert oder nicht geöffnet ist
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open))
@@ -35,13 +35,12 @@ namespace socialforms.Models.DB
             // wir erzeugen unseren SQL-Befehl
             //      leeres Command erzeugen
             DbCommand cmdDelete = this._conn.CreateCommand();
-            cmdDelete.CommandText = "delete from users where user_id = userId;";
+            cmdDelete.CommandText = "delete from users where userId = uID;";
 
             DbParameter paramId = cmdDelete.CreateParameter();
-            paramId.ParameterName = "id";
+            paramId.ParameterName = "uID";
             paramId.DbType = DbType.Int32;
-            paramId.Value = userId;
-
+            paramId.Value = uID;
             cmdDelete.Parameters.Add(paramId);
 
             // nun kann der SQL-Befehl an den DB-Server gesendet werden 
@@ -75,8 +74,6 @@ namespace socialforms.Models.DB
                 while (reader.Read())
                 {
                     users.Add(new User {
-                        //PersonId ... Property der Klasse User
-                        // "user_id" ... Name der Spalte in der MYSQL-Tabelle
                         PersonId = Convert.ToInt32(reader["user_id"]),
                         Username = Convert.ToString(reader["username"]),
                         Birthdate = Convert.ToDateTime(reader["birthdate"]),
@@ -86,12 +83,7 @@ namespace socialforms.Models.DB
                     });
                 }
 
-            }   // hier wird automatisch die Resource (DbDataReader) wieder freigegeben 
-                // er wird automatisch reader.Dispose() aufgerufen 
-
-            //2 mögliche Rückgeabefälle:
-            //  leere Liste, falls kein User in der DB-Tabelle enthalten ist
-            //  ansonsten, die Liste mit den Usern
+            }  
             return users;
         }
 
