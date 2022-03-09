@@ -27,7 +27,7 @@ namespace socialforms.Models
         public String Password { get; set; }
         public DateTime Birthdate { get; set; }
 
-        public string EMail { get; set; }
+        public string Email { get; set; }
 
         public Gender Gender { get; set; }
 
@@ -37,7 +37,7 @@ namespace socialforms.Models
             Username = username;
             Password = passsword;
             Birthdate = birthdate;
-            EMail = email;
+            Email = email;
             Gender = gender;
         }
 

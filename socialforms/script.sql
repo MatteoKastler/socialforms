@@ -40,8 +40,6 @@ CREATE TABLE answers(
     textAnswer VARCHAR(1024),
     choiceAnswer INT,
     
-    
-
     PRIMARY KEY(answerId),
     FOREIGN KEY(questionId) REFERENCES questions(questionId),
     FOREIGN KEY(userId) REFERENCES answers(answerId)
