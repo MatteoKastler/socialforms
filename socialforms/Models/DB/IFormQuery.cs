@@ -18,8 +18,7 @@ namespace socialforms.Models.DB
         List<Question> GetAllQuestions();
         int cntQuestions(int formId);
         bool Update(int qstId, Question NewQuestionData);
-        int cntAnswers(int qstId);
-        //weitere Methoden
+       
     }
 }
 
