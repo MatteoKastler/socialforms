@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace socialforms.Models.DB
 {
-    interface IRepositoryQuestions
+    interface IFormQuery
     {
         // zur DB verbinden
         void Connect();

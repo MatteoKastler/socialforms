@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace socialforms.Models.DB.sql
 {
-    public class RepositoryQuestionsDB : IRepositoryQuestions
+    public class FormQuery : IRepositoryQuestions
     {
         public int cntAnswers(int qstId)
         {

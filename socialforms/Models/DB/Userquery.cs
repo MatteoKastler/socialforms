@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace socialforms.Models.DB
 {
-    public class RepositoryUsersDB : IRepositoryUsers
+    public class Userquery : IUsersquery
     {  
         private string _connString = "Server=localhost;database=;user=root;password=MBigubb75#";
         DbConnection _conn;
