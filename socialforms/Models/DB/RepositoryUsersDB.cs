@@ -7,25 +7,24 @@ using System.Data.Common;
 namespace socialforms.Models.DB
 {
     public class RepositoryUsersDB : IRepositoryUsers
-    {   //Verbindung für den MySQL-Server
+    {  
         private string _connString = "Server=localhost;database=;user=root;password=MBigubb75#";
-        // Instanz/Objekt für den Zugriff auf den MySQL-Server
         DbConnection _conn;
 
 
        public void Connect()
         {
             if(this._conn == null)
-            {   //wird sie erzeugen 
+            {  
                 this._conn = new MySqlConnection(this._connString);
-            }   // falls die Verbindung noch nicht geöffnet ist
+            }   
             if(this._conn.State != System.Data.ConnectionState.Open)
-            {   //wird sie öffnen
+            {  
                 this._conn.Open();
             }
         } 
 
-        public bool Delete(int userId)
+        public bool Delete(int uID)
         {
             //falls die Verb. nicht existiert oder nicht geöffnet ist
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open))
@@ -35,16 +34,14 @@ namespace socialforms.Models.DB
             // wir erzeugen unseren SQL-Befehl
             //      leeres Command erzeugen
             DbCommand cmdDelete = this._conn.CreateCommand();
-            cmdDelete.CommandText = "delete from users where user_id = userId;";
+            cmdDelete.CommandText = "delete from users where userId = uID;";
 
             DbParameter paramId = cmdDelete.CreateParameter();
-            paramId.ParameterName = "id";
+            paramId.ParameterName = "uID";
             paramId.DbType = DbType.Int32;
-            paramId.Value = userId;
-
+            paramId.Value = uID;
             cmdDelete.Parameters.Add(paramId);
 
-            // nun kann der SQL-Befehl an den DB-Server gesendet werden 
             return cmdDelete.ExecuteNonQuery() == 1;
         }
 
@@ -56,6 +53,8 @@ namespace socialforms.Models.DB
             }
         }
 
+
+        //not checked
         public List<User> GetAllUsers()
         {   //leere Liste für die User erzeugen
             List<User> users = new List<User>();
@@ -75,8 +74,6 @@ namespace socialforms.Models.DB
                 while (reader.Read())
                 {
                     users.Add(new User {
-                        //PersonId ... Property der Klasse User
-                        // "user_id" ... Name der Spalte in der MYSQL-Tabelle
                         PersonId = Convert.ToInt32(reader["user_id"]),
                         Username = Convert.ToString(reader["username"]),
                         Birthdate = Convert.ToDateTime(reader["birthdate"]),
@@ -86,12 +83,7 @@ namespace socialforms.Models.DB
                     });
                 }
 
-            }   // hier wird automatisch die Resource (DbDataReader) wieder freigegeben 
-                // er wird automatisch reader.Dispose() aufgerufen 
-
-            //2 mögliche Rückgeabefälle:
-            //  leere Liste, falls kein User in der DB-Tabelle enthalten ist
-            //  ansonsten, die Liste mit den Usern
+            }  
             return users;
         }
 
@@ -101,18 +93,14 @@ namespace socialforms.Models.DB
         }
 
         public bool Insert(User user)
-        {   //falls die Verb. nicht existiert oder nicht geöffnet ist
+        {  
             if((this._conn == null) || (this._conn.State != ConnectionState.Open))
             {
                 return false;
             }
-            // wir erzeugen unseren SQL-Befehl
-            //      leeres Command erzeugen
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            // Parameter verwenden: um SQL-Injections zu verhindern
-            // z.B. @username ... der Bezeichner username kann selbst gewählt werden
-            cmdInsert.CommandText = "insert into users value(null, @username, sha2(@paramPWD, 512), @bDate, @mail, @gender)";
+            cmdInsert.CommandText = "insert into users value(null, @username, sha2(@pass, 512), @bDate, @mail, @gender)"; // null únd SQL macht dann autoincrement?
 
             // leeren Parameter erzeugen
             DbParameter paramUN = cmdInsert.CreateParameter();
@@ -122,7 +110,7 @@ namespace socialforms.Models.DB
             paramUN.Value = user.Username;
 
             DbParameter paramPWD = cmdInsert.CreateParameter();
-            paramPWD.ParameterName = "paramPWD";
+            paramPWD.ParameterName = "pass";
             paramPWD.DbType = DbType.String;
             paramPWD.Value = user.Password;
 
@@ -142,7 +130,7 @@ namespace socialforms.Models.DB
             paramGender.Value = user.Gender;
 
             //die Parameter mit dem Command verbinden
-            cmdInsert.Parameters.Add(paramUN);
+            cmdInsert.Parameters.Add(paramUN)   ;
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBDate);
             cmdInsert.Parameters.Add(paramEMail);

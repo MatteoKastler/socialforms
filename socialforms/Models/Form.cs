@@ -34,10 +34,21 @@ namespace socialforms.Models
                 }
             }
         }
+        private List<Question> _questions = new List<Question>();
+
+        public List<Question> questions{
+            get { return this._questions; }
+            set {
+                //if (validateQues) {
+                    this._userId = value;
+                }
+            }
+        }
 
         public String FormName { get; set; }
 
         public DateTime CreateDate { get; set; }
+
 
         
 
