@@ -7,22 +7,22 @@
 
 <form asp-controller="user" asp-action="registration" method="post">
     <p>
-        <label asp-for="Username" />Choose a username</label> <br />
+        <label asp-for="Username" >Choose a username</label> <br />
         <input type="text" asp-for="Username" />
         <span asp-validation-for="Username"></span>
     </p>
     <p>
-        <label asp-for="Password" />Choose a strong password</label> <br />
+        <label asp-for="Password" >Choose a strong password</label> <br />
         <input type="password" asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </p>
     <p>
-        <label asp-for="Birthdate" />Enter your birthdate</label> <br />
+        <label asp-for="Birthdate" >Enter your birthdate</label> <br />
         <input type="date" asp-for="Birthdate" />
         <span asp-validation-for="Birthdate"></span>
     </p>
     <p>
-        <label asp-for="Email" /> Enter your Email-Address</label> <br />
+        <label asp-for="Email" > Enter your Email-Address</label> <br />
         <input type="email" asp-for="Email" />
         <span asp-validation-for="Email"></span>
     </p>
