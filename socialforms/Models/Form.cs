@@ -38,12 +38,9 @@ namespace socialforms.Models
 
         public List<Question> questions{
             get { return this._questions; }
-            set {
-                //if (validateQues) {
-                    this._userId = value;
-                }
-            }
+           
         }
+        
 
         public String FormName { get; set; }
 
