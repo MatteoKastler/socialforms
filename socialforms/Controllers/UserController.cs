@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
     public class UserController : Controller {
-        public IActionResult index() {
+        public IActionResult Index() {
             return View();
         }
 
