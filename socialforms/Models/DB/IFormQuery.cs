@@ -7,16 +7,13 @@ namespace socialforms.Models.DB
 {
     interface IFormQuery
     {
-        // zur DB verbinden
-        void Connect();
-        // Verbindung zur DB beenden
-        void Disconnect();
-
-        bool Insert(Question question);
-        bool Delete(int qstId);
-        User GetQuestion(int qstId);
-        List<Question> GetAllQuestions();
+        bool Insert(Form form);
+        bool Delete(int formId);
+        String getName(int formId);
+        List<Question> GetQuestions();
         int cntQuestions(int formId);
+        int cntUsersAnswered(); //get amount of users that answered the form
+        DateTime getCreateDate();
         bool Update(int qstId, Question NewQuestionData);
        
     }
