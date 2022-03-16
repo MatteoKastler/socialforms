@@ -46,6 +46,9 @@ namespace socialforms.Models
 
         public DateTime CreateDate { get; set; }
 
+
+
+
+    }
 }
-}
-}
+
