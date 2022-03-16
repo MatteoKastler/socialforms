@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using socialforms.Models;
+using socialforms.Models.DB;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace socialforms.Controllers {
     public class UserController : Controller {
+
+        private IUsersquery _rep = new Userquery();
         public IActionResult Index() {
             return View();
         }
