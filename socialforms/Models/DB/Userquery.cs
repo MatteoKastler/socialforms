@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
+using System.Text;
 
 namespace socialforms.Models.DB
 {
@@ -69,8 +70,7 @@ namespace socialforms.Models.DB
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
-                        Email = Convert.ToString(reader["email"]),
-                        PwdHash = Convert.ToString(reader["pwdHash"])
+                        Email = Convert.ToString(reader["email"])
                     });
                 }
             }  
@@ -126,7 +126,7 @@ namespace socialforms.Models.DB
             return cmdInsert.ExecuteNonQuery() == 1;
         }
 
-        public User Login(string username, string password)
+        /*public User Login(string username, string password)
         {
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return null;
@@ -136,16 +136,14 @@ namespace socialforms.Models.DB
             cmdInsert.CommandText = "SELECT pwdHash FROM users WHERE userName = @user";
 
             DbParameter paramUN = cmdInsert.CreateParameter();
-            paramUN.ParameterName = "username";
+            paramUN.ParameterName = "user";
             paramUN.DbType = DbType.String;
             paramUN.Value = username;
 
-            DbParameter paramPWD = cmdInsert.CreateParameter();
-            paramPWD.ParameterName = "pass";
-            paramPWD.DbType = DbType.String;
-            paramPWD.Value = password;
+            cmdInsert.Parameters.Add(paramUN);
+            cmdInsert.ExecuteNonQuery();
 
-        }
+        }*/
 
 
         public bool Update(int userId, User newUserData)
