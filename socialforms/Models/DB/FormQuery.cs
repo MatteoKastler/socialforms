@@ -17,6 +17,10 @@ namespace socialforms.Models.DB.sql
             throw new NotImplementedException();
         }
 
+        public int cntUsersAnswered() {
+            throw new NotImplementedException();
+        }
+
         public void Connect()
         {
             throw new NotImplementedException();
@@ -37,13 +41,29 @@ namespace socialforms.Models.DB.sql
             throw new NotImplementedException();
         }
 
+        public DateTime getCreateDate() {
+            throw new NotImplementedException();
+        }
+
+        public string getName(int formId) {
+            throw new NotImplementedException();
+        }
+
         public User GetQuestion(int qstId)
         {
             throw new NotImplementedException();
         }
 
+        public List<Question> GetQuestions() {
+            throw new NotImplementedException();
+        }
+
         public bool Insert(Question question)
         {
+            throw new NotImplementedException();
+        }
+
+        public bool Insert(Form form) {
             throw new NotImplementedException();
         }
 
