@@ -9,7 +9,7 @@
         <div class="card" style="width:400px">
             <img class="card-img-top" src="/res/Download.jpg" alt="Card image" style="width:100%">
             <div class="card-body">
-                <h4 class="card-title">Name des Lamas hier   <a href=/user/settings class="btn btn-primary" target="_blank" rel="noopener noreferrer">Settings</a></h4>
+                <h4 class="card-title">Name des Lamas hier&nbsp;&nbsp;&nbsp;&nbsp; <a href=/user/settings class="btn btn-primary" target="_blank" rel="noopener noreferrer">Settings</a> </h4> 
 
                 <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
             </div>
@@ -40,11 +40,10 @@
                        @foreach (Form f in Model)
                        {
                            <tr>
-                               <td>@u.PersonId</td>
-                               <td>@u.Username</td>
-                               <td>@u.EMail</td>
-                               <td>@u.Birthdate.ToLongDateString()</td>
-                               <td>@u.Gender</td>
+                               <td>@f.Name</td>
+                               <td>@f.CreateDate</td>
+                               <td>@cntQst(f.FormId)</td>
+                               <td>@cntAns(f.FormId)</td>
                                <td>
                                     senden an den User-Controller und dort an die Action (Methode) delete
                                    <form action="/user/delete/@u.PersonId" method="get">

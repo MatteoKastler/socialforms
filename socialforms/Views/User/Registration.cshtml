@@ -27,11 +27,11 @@
         <span asp-validation-for="Email"></span>
     </p>
     <p>
-        <label asp-for="Gender">Gender</label> <br />
+        <label asp-for="Gender">Geschlecht</label><br />
         <select asp-for="Gender">
-            <option>männlich</option>
-            <option>weiblich</option>
-            <option>nicht angegeben</option>
+            <option value="0">männlich</option>
+            <option value="1">weiblich</option>
+            <option value="2">nicht angegeben</option>
         </select>
         <span asp-validation-for="Gender"></span>
     </p>
