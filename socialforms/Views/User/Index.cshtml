@@ -40,11 +40,10 @@
                        @foreach (Form f in Model)
                        {
                            <tr>
-                               <td>@u.PersonId</td>
-                               <td>@u.Username</td>
-                               <td>@u.EMail</td>
-                               <td>@u.Birthdate.ToLongDateString()</td>
-                               <td>@u.Gender</td>
+                               <td>@f.Name</td>
+                               <td>@f.CreateDate</td>
+                               <td>@cntQst(f.FormId)</td>
+                               <td>@cntAns(f.FormId)</td>
                                <td>
                                     senden an den User-Controller und dort an die Action (Methode) delete
                                    <form action="/user/delete/@u.PersonId" method="get">

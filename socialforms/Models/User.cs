@@ -52,7 +52,7 @@ namespace socialforms.Models
 
         public override string ToString()
         {
-            return PersonId + "\n" + Username + "\n" + Password + "\n" + Birthdate.ToLongDateString();
+            return PersonId + "\n" + Username + "\n" + Password + "\n" + Birthdate.ToLongDateString() + Email + "\n" + Gender + "\n" + UserDescription;
         }
 
 

@@ -3,6 +3,7 @@ using socialforms.Models;
 using socialforms.Models.DB;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,8 +13,33 @@ namespace socialforms.Controllers {
     public class UserController : Controller {
 
         private IUsersquery _rep = new Userquery();
-        public IActionResult Index() {
-            return View();
+        public IActionResult Index()
+        {
+            try
+            {
+                _rep.Connect();
+                List<User> userFromDB = _rep.GetAllUsers();
+                if (userFromDB == null)
+                {
+                    return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
+                }
+                else
+                {
+                    // Liste der User an die View übergeben
+                    return View(userFromDB);
+                }
+
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Es gab ein Problem mit der Datenbank!", "Bitte versuchen Sie es später erneut!"));
+            }
+            finally
+            {
+                _rep.Disconnect();
+            }
+
+
         }
 
         [HttpGet]
@@ -34,21 +60,47 @@ namespace socialforms.Controllers {
 
 
         [HttpPost]
-        public IActionResult Registration(User userDataFromForm) {
-            if (userDataFromForm == null) {
+        public IActionResult Registration(User userDataFromForm)
+        {
+
+            if (userDataFromForm == null)
+            {
                 return RedirectToAction("Registration");
             }
 
             ValidateRegistrationData(userDataFromForm);
 
-            if (ModelState.IsValid) {
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _rep.Connect();
+                    if (_rep.Insert(userDataFromForm))
+                    {
+                        return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
+                    }
+                    else
+                    {
+                        return View("_Message", new Message("Registrierung", "Bitte versuchen Sie es später erneut"));
+                    }
 
-                return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
+                }
+                catch (DbException)
+                {
+                    return View("_Message", new Message("Registrierung", "Datenbankfehler", "Bitte versuchen Sie es später erneut"));
+                }
+                finally
+                {
+                    _rep.Disconnect();
+                }
+
 
             }
+
             return View(userDataFromForm);
         }
+
 
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
@@ -107,7 +159,7 @@ namespace socialforms.Controllers {
 
             if (Regex.IsMatch(pattern, u.Email))
             {
-                ModelState.AddModelError("Password", "Bitte geben sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
+                ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
 
             //Birthdate
