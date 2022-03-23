@@ -24,7 +24,7 @@ namespace socialforms.Models
 
         public string Username { get; set; }
 
-        public String Password { get; set; }
+        public String PwdHash { get; set; }
         public DateTime Birthdate { get; set; }
 
         public string Email { get; set; }

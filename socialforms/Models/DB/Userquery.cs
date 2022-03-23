@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Security.Cryptography; 
 
 namespace socialforms.Models.DB
 {
@@ -24,22 +25,19 @@ namespace socialforms.Models.DB
             }
         } 
 
-        public bool Delete(int uID)
+        public bool Delete(int userId)
         {
-            //falls die Verb. nicht existiert oder nicht geöffnet ist
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open))
             {
                 return false;
             }
-            // wir erzeugen unseren SQL-Befehl
-            //      leeres Command erzeugen
             DbCommand cmdDelete = this._conn.CreateCommand();
-            cmdDelete.CommandText = "delete from users where userId = uID;";
+            cmdDelete.CommandText = "DELETE from users WHERE userId = @userId;";
 
             DbParameter paramId = cmdDelete.CreateParameter();
-            paramId.ParameterName = "uID";
+            paramId.ParameterName = "userId";
             paramId.DbType = DbType.Int32;
-            paramId.Value = uID;
+            paramId.Value = userId;
             cmdDelete.Parameters.Add(paramId);
 
             return cmdDelete.ExecuteNonQuery() == 1;
@@ -47,8 +45,7 @@ namespace socialforms.Models.DB
 
         public void Disconnect()
         {
-            if((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open))
-            {
+            if((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)){
                 this._conn.Close();
             }
         }
@@ -56,33 +53,26 @@ namespace socialforms.Models.DB
 
         //not checked
         public List<User> GetAllUsers()
-        {   //leere Liste für die User erzeugen
+        {  
             List<User> users = new List<User>();
 
-            if ((this._conn == null) || (this._conn.State != ConnectionState.Open))
-            {   //null zurückliefern 
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)){ 
                 return null;
             }
             DbCommand cmdAllUsers = this._conn.CreateCommand();
-            cmdAllUsers.CommandText = "select * from users";
-            // ExecuteReader() ... bei SELECT-Abfragen
-            // using ... kurze Schreibweise für try ... finally
+            cmdAllUsers.CommandText = "´SELECT * from users";
             using (DbDataReader reader = cmdAllUsers.ExecuteReader())
-            {   //Read() ... liest einen Datensatz aus der Tabelle user
-                // Read() gibt true zurück, falls ein Datensatz existiert
-                //             false zurück, falls keiner mehr existiert
-                while (reader.Read())
-                {
+            {
+                while (reader.Read()){
                     users.Add(new User {
-                        PersonId = Convert.ToInt32(reader["user_id"]),
-                        Username = Convert.ToString(reader["username"]),
-                        Birthdate = Convert.ToDateTime(reader["birthdate"]),
+                        PersonId = Convert.ToInt32(reader["userId"]),
+                        Username = Convert.ToString(reader["userName"]),
+                        Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
-                        Email = Convert.ToString(reader["email"])
-                        // Passwort wird nicht ausgelesen
+                        Email = Convert.ToString(reader["email"]),
+                        PwdHash = Convert.ToString(reader["pwdHash"])
                     });
                 }
-
             }  
             return users;
         }
@@ -100,11 +90,9 @@ namespace socialforms.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "insert into users value(null, @username, sha2(@pass, 512), @bDate, @mail, @gender)"; // null únd SQL macht dann autoincrement?
+            cmdInsert.CommandText = "INSERT into users value(null, @username, @pwdHash, @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
 
-            // leeren Parameter erzeugen
             DbParameter paramUN = cmdInsert.CreateParameter();
-            // hier den selbstgewählten Parameternamen verwenden
             paramUN.ParameterName = "username";
             paramUN.DbType = DbType.String;
             paramUN.Value = user.Username;
@@ -112,7 +100,7 @@ namespace socialforms.Models.DB
             DbParameter paramPWD = cmdInsert.CreateParameter();
             paramPWD.ParameterName = "pass";
             paramPWD.DbType = DbType.String;
-            paramPWD.Value = user.Password;
+            paramPWD.Value = user.PwdHash;
 
             DbParameter paramBDate = cmdInsert.CreateParameter();
             paramBDate.ParameterName = "bDate";
@@ -129,20 +117,34 @@ namespace socialforms.Models.DB
             paramGender.DbType = DbType.Int32;
             paramGender.Value = user.Gender;
 
-            //die Parameter mit dem Command verbinden
             cmdInsert.Parameters.Add(paramUN)   ;
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBDate);
             cmdInsert.Parameters.Add(paramEMail);
             cmdInsert.Parameters.Add(paramGender);
 
-            // nun kann der SQL-Befehl an den DB-Server gesendet werden 
             return cmdInsert.ExecuteNonQuery() == 1;
         }
 
         public User Login(string username, string password)
         {
-            throw new NotImplementedException();
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return null;
+            }
+            DbCommand cmdInsert = this._conn.CreateCommand();
+
+            cmdInsert.CommandText = "SELECT userName, pwdHash FROM users WHERE userName = @user AND pwdHash = @pwdHash";
+
+            DbParameter paramUN = cmdInsert.CreateParameter();
+            paramUN.ParameterName = "username";
+            paramUN.DbType = DbType.String;
+            paramUN.Value = username;
+
+            DbParameter paramPWD = cmdInsert.CreateParameter();
+            paramPWD.ParameterName = "pass";
+            paramPWD.DbType = DbType.String;
+            paramPWD.Value = password;
+
         }
 
 
@@ -201,5 +203,19 @@ namespace socialforms.Models.DB
             // nun kann der SQL-Befehl an den DB-Server gesendet werden 
             return cmdUpdate.ExecuteNonQuery() == 1;
         }
+        static string ComputeSha256Hash(string rawData) {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create()) {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++) {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }   
     }
 }
