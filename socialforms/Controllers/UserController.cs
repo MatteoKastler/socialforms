@@ -149,7 +149,7 @@ namespace socialforms.Controllers {
             }
 
             //Passwort
-            if ((u.Password != null) || (u.Password.Length < 8))
+            if ((u.Password == null) || (u.Password.Length < 8))
             {
                 ModelState.AddModelError("Password", "Das Password muss mindestens 8 Zeichen lang sein");
             }
