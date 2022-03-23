@@ -24,7 +24,7 @@ namespace socialforms.Models
 
         public string Username { get; set; }
 
-        public String PwdHash { get; set; }
+        public String Password { get; set; }
         public DateTime Birthdate { get; set; }
 
         public string Email { get; set; }
@@ -34,11 +34,11 @@ namespace socialforms.Models
         public String UserDescription { get; set; }
 
    
-        public User(int id, string username, string passsword, DateTime birthdate, string email, Gender gender, string userDescription)
+        public User(int id, string username, string password, DateTime birthdate, string email, Gender gender, string userDescription)
         {
             PersonId = id;
             Username = username;
-            Password = passsword;
+            Password = password;
             Birthdate = birthdate;
             Email = email;
             Gender = gender;
@@ -52,7 +52,7 @@ namespace socialforms.Models
 
         public override string ToString()
         {
-            return PersonId + "\n" + Username + "\n" + PwdHash + "\n" + Birthdate.ToLongDateString() + Email + "\n" + Gender + "\n" + UserDescription;
+            return PersonId + "\n" + Username + "\n" + Password + "\n" + Birthdate.ToLongDateString() + Email + "\n" + Gender + "\n" + UserDescription;
         }
 
 

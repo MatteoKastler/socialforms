@@ -90,7 +90,7 @@ namespace socialforms.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "INSERT into users value(null, @username, @pwdHash, @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
+            cmdInsert.CommandText = "INSERT into users value(null, @username, sha2(@pwd,512), @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
 
             DbParameter paramUN = cmdInsert.CreateParameter();
             paramUN.ParameterName = "username";
@@ -98,9 +98,9 @@ namespace socialforms.Models.DB
             paramUN.Value = user.Username;
 
             DbParameter paramPWD = cmdInsert.CreateParameter();
-            paramPWD.ParameterName = "pass";
+            paramPWD.ParameterName = "pwd";
             paramPWD.DbType = DbType.String;
-            paramPWD.Value = user.PwdHash;
+            paramPWD.Value = user.Password;
 
             DbParameter paramBDate = cmdInsert.CreateParameter();
             paramBDate.ParameterName = "bDate";
@@ -133,7 +133,7 @@ namespace socialforms.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "SELECT userName, pwdHash FROM users WHERE userName = @user AND pwdHash = @pwdHash";
+            cmdInsert.CommandText = "SELECT pwdHash FROM users WHERE userName = @user";
 
             DbParameter paramUN = cmdInsert.CreateParameter();
             paramUN.ParameterName = "username";
