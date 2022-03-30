@@ -33,8 +33,4 @@
     <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\DB\sql\" />
-  </ItemGroup>
-
 </Project>

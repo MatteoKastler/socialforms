@@ -79,7 +79,23 @@ namespace socialforms.Models.DB
 
         public User GetUser(int userId)
         {
-            throw new NotImplementedException();
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return null;
+            }
+            DbCommand User = this._conn.CreateCommand();
+            User.CommandText = "´SELECT * from users";
+            using (DbDataReader reader = User.ExecuteReader()) {
+                while (reader.Read()) {
+                    users.Add(new User {
+                        PersonId = Convert.ToInt32(reader["userId"]),
+                        Username = Convert.ToString(reader["userName"]),
+                        Birthdate = Convert.ToDateTime(reader["birthDate"]),
+                        Gender = (Gender)Convert.ToInt32(reader["gender"]),
+                        Email = Convert.ToString(reader["email"])
+                    });
+                }
+            }
+            return users;
         }
 
         public bool Insert(User user)
@@ -90,7 +106,7 @@ namespace socialforms.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "INSERT into users value(null, @username, sha2(@pwd,512), @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
+            cmdInsert.CommandText = "INSERT into users value(null, @username, sha2(@pwd,256), @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
 
             DbParameter paramUN = cmdInsert.CreateParameter();
             paramUN.ParameterName = "username";
@@ -126,24 +142,33 @@ namespace socialforms.Models.DB
             return cmdInsert.ExecuteNonQuery() == 1;
         }
 
-        /*public User Login(string username, string password)
+        public User Login(string username, string password)
         {
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return null;
             }
-            DbCommand cmdInsert = this._conn.CreateCommand();
+            DbCommand login = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "SELECT pwdHash FROM users WHERE userName = @user";
+            login.CommandText = "SELECT userId,pwdHash FROM users WHERE userName = @user";
 
-            DbParameter paramUN = cmdInsert.CreateParameter();
+            DbParameter paramUN = login.CreateParameter();
             paramUN.ParameterName = "user";
             paramUN.DbType = DbType.String;
             paramUN.Value = username;
 
-            cmdInsert.Parameters.Add(paramUN);
-            cmdInsert.ExecuteNonQuery();
-
-        }*/
+            login.Parameters.Add(paramUN);
+            if(login.ExecuteNonQuery() == 1) {
+                DbDataReader reader = login.ExecuteReader();
+                reader.Read();
+                if (String.Equals(reader["pwdHash"], ComputeSha256Hash(password))) {
+                    return GetUser(Convert.ToInt32(reader["userId"]));
+                } else {
+                    Console.WriteLine("password is not correct");  //TODO: muss auf da website dann iwo hin
+                }
+            }
+            Console.WriteLine("multiple or no user found");  //TODO: muss auch auf die website
+            return null;
+        }
 
 
         public bool Update(int userId, User newUserData)
