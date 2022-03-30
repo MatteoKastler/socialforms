@@ -61,7 +61,7 @@ namespace socialforms.Models.DB
                 return null;
             }
             DbCommand cmdAllUsers = this._conn.CreateCommand();
-            cmdAllUsers.CommandText = "´SELECT * from users";
+            cmdAllUsers.CommandText = "SELECT * from users";
             using (DbDataReader reader = cmdAllUsers.ExecuteReader())
             {
                 while (reader.Read()){
@@ -82,20 +82,25 @@ namespace socialforms.Models.DB
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return null;
             }
-            DbCommand User = this._conn.CreateCommand();
-            User.CommandText = "´SELECT * from users";
-            using (DbDataReader reader = User.ExecuteReader()) {
-                while (reader.Read()) {
-                    users.Add(new User {
+            DbCommand QUser = this._conn.CreateCommand();
+            QUser.CommandText = "SELECT * from users WHERE userId = @userId";
+
+            DbParameter paramId = QUser.CreateParameter();
+            paramId.ParameterName = "userId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = userId;
+
+            QUser.Parameters.Add(paramId);
+            using (DbDataReader reader = QUser.ExecuteReader()) { 
+                User temp = new User {
                         PersonId = Convert.ToInt32(reader["userId"]),
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
                         Email = Convert.ToString(reader["email"])
-                    });
-                }
-            }
-            return users;
+                    };
+                return temp;
+            }  
         }
 
         public bool Insert(User user)
