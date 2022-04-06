@@ -1,0 +1,18 @@
+﻿@model socialforms.Models.Message
+@* View um Fehler- bzw. Erfolgsmeldungen anzuzeigenl*@
+
+<h3>
+    @Model.Header
+</h3>
+<p>
+    <b>Meldung</b><br />
+    @Model.MessageText
+</p>
+<p>
+    @if (Model.Solution != null)
+    {
+        <b>Lösung</b><br />
+        @Model.Solution
+    }
+</p>
+

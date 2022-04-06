@@ -17,7 +17,7 @@ namespace socialforms.Controllers {
         {
             try
             {
-                _rep.Connect();
+                //_rep.Connect();
                 List<User> userFromDB = _rep.GetAllUsers();
                 if (userFromDB == null)
                 {
@@ -36,7 +36,7 @@ namespace socialforms.Controllers {
             }
             finally
             {
-                _rep.Disconnect();
+                //_rep.Disconnect();
             }
 
 
@@ -75,7 +75,7 @@ namespace socialforms.Controllers {
             {
                 try
                 {
-                    _rep.Connect();
+                    //_rep.Connect();
                     if (_rep.Insert(userDataFromForm))
                     {
                         return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
@@ -92,7 +92,7 @@ namespace socialforms.Controllers {
                 }
                 finally
                 {
-                    _rep.Disconnect();
+                   // _rep.Disconnect();
                 }
 
 

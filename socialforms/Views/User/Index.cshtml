@@ -15,7 +15,7 @@
             </div>
         </div>
     </p>
-    @*@if (true) //keine Forms in der Tabelle
+    @if (false) //keine Forms in der Tabelle
     {
        <p>
            Es sind keine Form in der Tabelle vorhanden
@@ -23,7 +23,7 @@
     }
     else
     {
-                alle User in Tabellenform ausgeben 
+        //alle User in Tabellenform ausgeben 
                <table>
                    <thead>
                        <tr>
@@ -40,18 +40,18 @@
                        @foreach (Form f in Model)
                        {
                            <tr>
-                               <td>@f.Name</td>
-                               <td>@f.CreateDate</td>
-                               <td>@cntQst(f.FormId)</td>
-                               <td>@cntAns(f.FormId)</td>
+                               <td>Hier kommt der Name hin </td>
+                               <td>Hier kommt das Datum hin</td>
+                               <td>Hier kommt die Anzahl der Fragen hin </td>
+                               <td>Hier kommt die Anzahl der Antworten hin</td>
                                <td>
                                     senden an den User-Controller und dort an die Action (Methode) delete
-                                   <form action="/user/delete/@u.PersonId" method="get">
+                                   <form action="/user/delete/@f.FormId" method="get">
                                        <input type="submit" value="löschen" />
                                    </form>
                                </td>
                                <td>
-                                   <form action="/user/update/@u.UserId" method="get">
+                                   <form action="/user/update/@f.FormId" method="get">
                                        <input type="submit" value="ändern" />
                                    </form>
                                </td>
@@ -64,6 +64,6 @@
                        </tr>
                    </tfoot>
                </table>
-    }*@
+    }
 
 }
