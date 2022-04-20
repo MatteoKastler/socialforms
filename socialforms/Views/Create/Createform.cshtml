@@ -1,0 +1,35 @@
+﻿@model socialforms.Models.Question
+@{
+    ViewData["Title"] = "Create Form";
+}
+
+<h1>Create your own socialform</h1>
+
+<form asp-controller="user" asp-action="registration" method="post">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary">Textanswer</button>
+        <button type="button" class="btn btn-primary">MultipleChoice</button>
+    </div>
+    <p>
+        <label asp-for="Qtext">Enter the question</label> <br />
+        <input type="text" asp-for="Qtext" />
+        <span asp-validation-for="Qtext"></span>
+    </p>
+    @if(true){
+    <div>
+        <input type="text" list="possibleanswers" />
+        <datalist id="possibleanswers">
+            @for(int cnt = 1; cnt <= 1; cnt++){
+                <option>@cnt</option>
+                <option>@cnt</option>
+                <option>@cnt</option>
+                <option>@cnt</option>
+            }
+
+        </datalist>
+    </div>
+    }
+
+</form>
+
+
