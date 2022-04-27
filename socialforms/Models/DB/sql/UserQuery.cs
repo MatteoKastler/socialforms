@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,20 +11,20 @@ namespace socialforms.Models.DB
 {
     public class Userquery : IUsersquery
     {  
-        private string _connString = "Server=localhost;Port=5040;database=socialforms;user=root;password=toor";
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
 
        public void Connect()
         {
-            if(this._conn == null)
-            {
+            if (this._conn == null) {
                 this._conn = new MySqlConnection(this._connString);
-                Console.Write("deine mutter leckt nüsse");
-            }   
+                Debug.WriteLine("connection has been created");
+            }
             if(this._conn.State != System.Data.ConnectionState.Open)
-            {  
+            {
                 this._conn.Open();
+                Debug.WriteLine("state has been set to open");
             }
         } 
 
@@ -92,8 +93,9 @@ namespace socialforms.Models.DB
             paramId.Value = userId;
 
             QUser.Parameters.Add(paramId);
-            using (DbDataReader reader = QUser.ExecuteReader()) { 
-                User temp = new User {
+            using (DbDataReader reader = QUser.ExecuteReader()) {
+                reader.Read();
+                User temp = new User{
                         PersonId = Convert.ToInt32(reader["userId"]),
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
@@ -112,7 +114,7 @@ namespace socialforms.Models.DB
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "INSERT into users value(null, @username, sha2(@pwd,256), @bDate, @mail, @gender, null, null)"; // null únd SQL macht dann autoincrement?
+            cmdInsert.CommandText = "INSERT into users value(null, @username, sha2(@pwd,256), @bDate, @mail, @gender, null, null)"; 
 
             DbParameter paramUN = cmdInsert.CreateParameter();
             paramUN.ParameterName = "username";

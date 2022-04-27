@@ -4,6 +4,7 @@ using socialforms.Models.DB;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -18,25 +19,25 @@ namespace socialforms.Controllers {
             try
             {
                 _rep.Connect();
-                List<User> userFromDB = _rep.GetAllUsers();
-                if (userFromDB == null)
+                User user = _rep.GetUser(1); //get user from session
+                if (user == null)
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
                 }
                 else
                 {
-                    // Liste der User an die View übergeben
-                    return View(userFromDB);
+                    Debug.WriteLine(user.Username);
+                    return View(user); //WICHTIG: in der Index view vom user braucht die tabelle außer dem user no a anderes model
                 }
-
             }
-            catch (DbException)
+            catch (DbException e)
             {
+                Debug.WriteLine(e.Message);
                 return View("_Message", new Message("Datenbankfehler", "Es gab ein Problem mit der Datenbank!", "Bitte versuchen Sie es später erneut!"));
             }
             finally
             {
-                //_rep.Disconnect();
+                _rep.Disconnect();
             }
 
 
@@ -79,7 +80,7 @@ namespace socialforms.Controllers {
             {
                 try
                 {
-                    //_rep.Connect();
+                    _rep.Connect();
                     if (_rep.Insert(userDataFromForm))
                     {
                         return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
