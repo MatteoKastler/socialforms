@@ -10,15 +10,16 @@ namespace socialforms.Models.DB
 {
     public class Userquery : IUsersquery
     {  
-        private string _connString = "Server=localhost;database=;user=root;password=MBigubb75#";
+        private string _connString = "Server=localhost;Port=5040;database=socialforms;user=root;password=toor";
         DbConnection _conn;
 
 
        public void Connect()
         {
             if(this._conn == null)
-            {  
+            {
                 this._conn = new MySqlConnection(this._connString);
+                Console.Write("deine mutter leckt nüsse");
             }   
             if(this._conn.State != System.Data.ConnectionState.Open)
             {  

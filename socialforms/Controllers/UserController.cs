@@ -17,7 +17,7 @@ namespace socialforms.Controllers {
         {
             try
             {
-                //_rep.Connect();
+                _rep.Connect();
                 List<User> userFromDB = _rep.GetAllUsers();
                 if (userFromDB == null)
                 {
