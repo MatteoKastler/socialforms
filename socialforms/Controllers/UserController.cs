@@ -56,6 +56,10 @@ namespace socialforms.Controllers {
         {
             return View();
         }
+        public IActionResult createform()
+        {
+            return View();
+        }
 
 
 
@@ -157,7 +161,7 @@ namespace socialforms.Controllers {
             //EMail
             string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
 
-            if (Regex.IsMatch(pattern, u.Email))
+            if (Regex.IsMatch(pattern, u.Email)==false)
             {
                 ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
