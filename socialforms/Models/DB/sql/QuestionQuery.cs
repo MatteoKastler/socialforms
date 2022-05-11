@@ -1,7 +1,9 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +11,23 @@ namespace socialforms.Models.DB.sql {
     public class QuestionQuery : IQuestionQuery {
         private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
         DbConnection _conn;
+
+        public void Connect() {
+            if (this._conn == null) {
+                this._conn = new MySqlConnection(this._connString);
+                Debug.WriteLine("connection has been created");
+            }
+            if (this._conn.State != System.Data.ConnectionState.Open) {
+                this._conn.Open();
+                Debug.WriteLine("state has been set to open");
+            }
+        }
+
+        public void Disconnect() {
+            if ((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)) {
+                this._conn.Close();
+            }
+        }
         public bool delete(int qstId) {
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return false;

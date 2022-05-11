@@ -26,7 +26,13 @@ namespace socialforms.Models.DB
                 this._conn.Open();
                 Debug.WriteLine("state has been set to open");
             }
-        } 
+        }
+
+        public void Disconnect() {
+            if ((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)) {
+                this._conn.Close();
+            }
+        }
 
         public bool Delete(int userId)
         {
@@ -44,13 +50,6 @@ namespace socialforms.Models.DB
             cmdDelete.Parameters.Add(paramId);
 
             return cmdDelete.ExecuteNonQuery() == 1;
-        }
-
-        public void Disconnect()
-        {
-            if((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)){
-                this._conn.Close();
-            }
         }
 
 
