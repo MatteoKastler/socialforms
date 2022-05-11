@@ -9,14 +9,44 @@ namespace socialforms.Models.DB.sql
 {
     public class FormQuery : IFormQuery {
 
-        private string _connString = "Server=localhost;database=;user=root;password=MBigubb75#";
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
         DbConnection _conn;
         public int cntQuestions(int formId) {
-            throw new NotImplementedException();
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return -1;
+            }
+            DbCommand getForm = this._conn.CreateCommand();
+            getForm.CommandText = "SELECT COUNT(*) AS questioncnt from questions WHERE formId = @formId";
+
+            DbParameter paramId = getForm.CreateParameter();
+            paramId.ParameterName = "FormId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = formId;
+
+            getForm.Parameters.Add(paramId);
+
+            using (DbDataReader reader = getForm.ExecuteReader()) {
+                return Convert.ToInt32(reader["questioncnt"]);
+            }
         }
 
-        public int cntUseranswers() {
-            throw new NotImplementedException();
+        public int cntUseranswers(int formId) {
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return -1;
+            }
+            DbCommand getForm = this._conn.CreateCommand();
+            getForm.CommandText = "SELECT COUNT(*) AS answers from answers WHERE questionId = @formId";
+
+            DbParameter paramId = getForm.CreateParameter();
+            paramId.ParameterName = "FormId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = formId;
+
+            getForm.Parameters.Add(paramId);
+
+            using (DbDataReader reader = getForm.ExecuteReader()) {
+                return Convert.ToInt32(reader["questions"]);
+            }
         }
 
         public bool Delete(int formId) {

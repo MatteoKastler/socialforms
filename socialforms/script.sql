@@ -42,6 +42,7 @@
 --    userId INT NOT NULL,
 --    textAnswer VARCHAR(1024),
 --    choiceAnswer INT,
+--    sliderAnswer INT
     
 --    PRIMARY KEY(answerId),
 --    FOREIGN KEY(questionId) REFERENCES questions(questionId),

@@ -1,9 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace socialforms.Models.DB.sql {
-    public class QuestionQuery {
+    public class QuestionQuery : IQuestionQuery {
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
+        DbConnection _conn;
+        public bool delete(int qstId) {
+            throw new NotImplementedException();
+        }
+
+        public Question getQuestion(int qstId) {
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return null;
+            }
+            DbCommand getForm = this._conn.CreateCommand();
+            getForm.CommandText = "SELECT * from questions WHERE qstId = @qstId";
+
+            DbParameter paramId = getForm.CreateParameter();
+            paramId.ParameterName = "qstId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = qstId;
+
+            getForm.Parameters.Add(paramId);
+            using (DbDataReader reader = getForm.ExecuteReader()) {
+                Question  temp = new Question {
+                    QuestionId = Convert.ToInt32(reader["questionId"]),
+                    FormId = Convert.ToInt32(reader["formId"]),
+                    Qtext = Convert.ToString(reader["text"]),
+                    QuestionType = Convert.ToInt32(reader["questionType"])
+                };
+                return temp;
+            }
+        }
+
+        public bool Insert(Question q) {
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return false;
+            }
+            DbCommand cmdInsert = this._conn.CreateCommand();
+
+            cmdInsert.CommandText = "INSERT into questions value(null, @formId, @text, @qsttype)";
+
+            DbParameter paramId = cmdInsert.CreateParameter();
+            paramId.ParameterName = "formId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = q.FormId;
+
+            DbParameter paramText = cmdInsert.CreateParameter();
+            paramText.ParameterName = "text";
+            paramText.DbType = DbType.String;
+            paramText.Value = q.Qtext;
+
+            DbParameter paramType = cmdInsert.CreateParameter();
+            paramType.ParameterName = "qsttype";
+            paramType.DbType = DbType.Date;
+            paramType.Value = q.QuestionType;
+
+
+            cmdInsert.Parameters.Add(paramId);
+            cmdInsert.Parameters.Add(paramType);
+            cmdInsert.Parameters.Add(paramType);
+
+            return cmdInsert.ExecuteNonQuery() == 1;
+        }
+    }
     }
 }

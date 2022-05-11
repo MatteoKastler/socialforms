@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace socialforms.Models.DB.sql {
     interface IQuestionQuery {
-        String getText(int qstId);
-        int getType(int qstId);
-        int getForm(int qstId);
 
-        
+        bool Insert(Question q);
+        bool delete(int qstId);
+        Question getQuestion(int qstId);
 
     }
 }

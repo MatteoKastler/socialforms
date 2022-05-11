@@ -12,7 +12,7 @@ namespace socialforms.Models.DB
         bool Delete(int formId);
         List<int> GetQuestions(int formId);
         int cntQuestions(int formId);
-        int cntUseranswers(); //get amount of users that answered the form
+        int cntUseranswers(int formId); //get amount of users that answered the form
     }
 }
 
