@@ -10,7 +10,19 @@ namespace socialforms.Models.DB.sql {
         private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
         DbConnection _conn;
         public bool delete(int qstId) {
-            throw new NotImplementedException();
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return false;
+            }
+            DbCommand cmdDelete = this._conn.CreateCommand();
+            cmdDelete.CommandText = "DELETE from questions WHERE questionId = @qstId;";
+
+            DbParameter paramId = cmdDelete.CreateParameter();
+            paramId.ParameterName = "qstId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = qstId;
+            cmdDelete.Parameters.Add(paramId);
+
+            return cmdDelete.ExecuteNonQuery() == 1;
         }
 
         public Question getQuestion(int qstId) {
@@ -63,7 +75,7 @@ namespace socialforms.Models.DB.sql {
 
             cmdInsert.Parameters.Add(paramId);
             cmdInsert.Parameters.Add(paramType);
-            cmdInsert.Parameters.Add(paramType);
+            cmdInsert.Parameters.Add(paramText);
 
             return cmdInsert.ExecuteNonQuery() == 1;
         }
