@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using socialforms.Models;
 using socialforms.Models.DB;
+using socialforms.Models.DB.sql;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -14,11 +16,17 @@ namespace socialforms.Controllers {
     public class UserController : Controller {
 
         private IUsersquery uQuery = new Userquery();
+        private IFormQuery fQuery = new FormQuery();
+        dynamic uModel;
         public IActionResult Index()
         {
             try
             {
                 uQuery.Connect();
+                fQuery.Connect();
+                uModel = new ExpandoObject();
+                uModel.user = u;
+                uModel.forms = fQuery.get;
                 User user = uQuery.GetUser(1); //get user from session
                 if (user == null)
                 {
@@ -38,6 +46,7 @@ namespace socialforms.Controllers {
             finally
             {
                 uQuery.Disconnect();
+                fQuery.Disconnect();
             }
 
 
@@ -106,7 +115,7 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-
+        User u;
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
@@ -116,13 +125,12 @@ namespace socialforms.Controllers {
             }
             try {
                 uQuery.Connect();
-                User temp = uQuery.Login(userDataFromForm.Username, userDataFromForm.Password);
-                Debug.WriteLine(userDataFromForm.Username + " " + userDataFromForm.Password);
+                u = uQuery.Login(userDataFromForm.Username, userDataFromForm.Password);
 
-                if (temp == null) {
+                if (u == null) {
                     return View("_Message", new Message("Login", "LoginFehler", "Kein user zu den Daten gefunden oder Passwort falsch"));//user in session speichern?
                 } else {
-                    return View("Index", temp);
+                    return View("Index", u); //nit u sondern des mixmodel aus user und zeug für tabelle
                 }
             }catch(DbException e) {
 
@@ -176,7 +184,7 @@ namespace socialforms.Controllers {
             var trimmedEmail = email.Trim();
 
             if (trimmedEmail.EndsWith(".")) {
-                return false; // suggested by @TK-421
+                return false;
             }
             try {
                 var addr = new System.Net.Mail.MailAddress(email);
