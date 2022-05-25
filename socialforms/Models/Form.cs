@@ -34,12 +34,6 @@ namespace socialforms.Models
                 }
             }
         }
-        private List<Question> _questions = new List<Question>();
-
-        public List<Question> questions{
-            get { return this._questions; }
-           
-        }
         
 
         public String FormName { get; set; }

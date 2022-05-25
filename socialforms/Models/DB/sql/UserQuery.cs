@@ -99,7 +99,8 @@ namespace socialforms.Models.DB
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
-                        Email = Convert.ToString(reader["email"])
+                        Email = Convert.ToString(reader["email"]),
+                        UserDescription = Convert.ToString(reader["userDescription"])
                     };
                     return temp;
                 }
