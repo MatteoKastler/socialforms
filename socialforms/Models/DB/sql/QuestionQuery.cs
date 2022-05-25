@@ -99,5 +99,4 @@ namespace socialforms.Models.DB.sql {
             return cmdInsert.ExecuteNonQuery() == 1;
         }
     }
-    }
 }

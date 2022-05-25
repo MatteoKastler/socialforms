@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 namespace socialforms.Controllers {
     public class UserController : Controller {
 
-        private IUsersquery _rep = new Userquery();
+        private IUsersquery uQuery = new Userquery();
         public IActionResult Index()
         {
             try
             {
-                _rep.Connect();
-                User user = _rep.GetUser(1); //get user from session
+                uQuery.Connect();
+                User user = uQuery.GetUser(1); //get user from session
                 if (user == null)
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
@@ -37,7 +37,7 @@ namespace socialforms.Controllers {
             }
             finally
             {
-                _rep.Disconnect();
+                uQuery.Disconnect();
             }
 
 
@@ -80,8 +80,8 @@ namespace socialforms.Controllers {
             {
                 try
                 {
-                    _rep.Connect();
-                    if (_rep.Insert(userDataFromForm))
+                    uQuery.Connect();
+                    if (uQuery.Insert(userDataFromForm))
                     {
                         return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
                     }
@@ -97,7 +97,7 @@ namespace socialforms.Controllers {
                 }
                 finally
                 {
-                   // _rep.Disconnect();
+                    uQuery.Disconnect();
                 }
 
 
@@ -114,17 +114,22 @@ namespace socialforms.Controllers {
             {
                 return RedirectToAction("Login");
             }
+            try {
+                uQuery.Connect();
+                User temp = uQuery.Login(userDataFromForm.Username, userDataFromForm.Password);
+                Debug.WriteLine(userDataFromForm.Username + " " + userDataFromForm.Password);
 
-            ValidateRegistrationData(userDataFromForm);
+                if (temp == null) {
+                    return View("_Message", new Message("Login", "LoginFehler", "Kein user zu den Daten gefunden oder Passwort falsch"));//user in session speichern?
+                } else {
+                    return View("Index", temp);
+                }
+            }catch(DbException e) {
 
-            if (ModelState.IsValid)
-            {
-
-
-                return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
-
+            } finally {
+                uQuery.Disconnect();
             }
-            return View(userDataFromForm);
+            return null;
         }
 
         [HttpPost]
@@ -167,11 +172,6 @@ namespace socialforms.Controllers {
                 ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
 
-            //Birthdate
-            /*if (DateTime.TryParseExact(str, "MM/dd/yyyy", null, DateTimeStyles.None, u.Birthdate) == true)
-            {
-                ModelState.AddModelError("Birthdate", "Bitte ein gültiges Datum im Format MM/dd/yyyy eingeben");
-            }*/
         }
     }
    

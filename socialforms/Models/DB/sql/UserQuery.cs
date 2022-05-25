@@ -9,7 +9,7 @@ using System.Text;
 
 namespace socialforms.Models.DB
 {
-    public class Userquery : IUsersquery
+    public  class Userquery : IUsersquery
     {  
         private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
@@ -32,7 +32,7 @@ namespace socialforms.Models.DB
             if ((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)) {
                 this._conn.Close();
             }
-        }
+        }   
 
         public bool Delete(int userId)
         {
@@ -80,6 +80,7 @@ namespace socialforms.Models.DB
 
         public User GetUser(int userId)
         {
+            Debug.WriteLine("Getuser called");
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return null;
             }
@@ -90,19 +91,20 @@ namespace socialforms.Models.DB
             paramId.ParameterName = "userId";
             paramId.DbType = DbType.Int32;
             paramId.Value = userId;
-
             QUser.Parameters.Add(paramId);
             using (DbDataReader reader = QUser.ExecuteReader()) {
-                reader.Read();
-                User temp = new User{
+                if (reader.Read()) {
+                    User temp = new User {
                         PersonId = Convert.ToInt32(reader["userId"]),
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
                         Email = Convert.ToString(reader["email"])
                     };
-                return temp;
-            }  
+                    return temp;
+                }
+            }
+            return null;
         }
 
         public bool Insert(User user)
@@ -151,12 +153,14 @@ namespace socialforms.Models.DB
 
         public User Login(string username, string password)
         {
+            Debug.WriteLine("is connection null: " + (this._conn == null) + " connectionstate: " + ConnectionState.Open);
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                
                 return null;
             }
             DbCommand login = this._conn.CreateCommand();
 
-            login.CommandText = "SELECT userId,pwdHash FROM users WHERE userName = @user";
+            login.CommandText = "SELECT userId,pass FROM users WHERE userName = @user";
 
             DbParameter paramUN = login.CreateParameter();
             paramUN.ParameterName = "user";
@@ -164,14 +168,16 @@ namespace socialforms.Models.DB
             paramUN.Value = username;
 
             login.Parameters.Add(paramUN);
-            if(login.ExecuteNonQuery() == 1) {
-                DbDataReader reader = login.ExecuteReader();
-                reader.Read();
-                if (String.Equals(reader["pwdHash"], ComputeSha256Hash(password))) {
-                    return GetUser(Convert.ToInt32(reader["userId"]));
-                } else {
-                    Console.WriteLine("password is not correct");  //TODO: muss auf da website dann iwo hin
-                }
+            
+            DbDataReader reader = login.ExecuteReader();
+            reader.Read();
+            Debug.WriteLine(reader["userId"] + " " + reader["pass"]);
+            if(String.Equals(reader["pass"], ComputeSha256Hash(password))) {
+                int id = Convert.ToInt32(reader["userId"]);
+                reader.Close();
+                return GetUser(id);
+            } else {
+                Console.WriteLine("password is not correct");  //TODO: muss auf da website dann iwo hin
             }
             Console.WriteLine("multiple or no user found");  //TODO: muss auch auf die website
             return null;
