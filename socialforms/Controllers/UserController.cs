@@ -165,13 +165,25 @@ namespace socialforms.Controllers {
             }
 
             //EMail
-            string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
-
-            if (Regex.IsMatch(pattern, u.Email)==false)
+            Debug.WriteLine(u.Email);
+            if (!IsValidEmail(u.Email))
             {
                 ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
 
+        }
+        bool IsValidEmail(string email) {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith(".")) {
+                return false; // suggested by @TK-421
+            }
+            try {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            } catch {
+                return false;
+            }
         }
     }
    
