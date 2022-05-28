@@ -6,13 +6,38 @@ using System.Threading.Tasks;
 using socialforms.Models;
 using System.Data.Common;
 using socialforms.Models.DB.sql;
+using socialforms.Models.DB;
 
 namespace socialforms.Controllers {
     public class CreateController : Controller {
 
-        private FormQuery _rep = new FormQuery();
-        public IActionResult Index() {
-            return View();
+        private IFormQuery _rep = new FormQuery();
+        private IQuestionQuery fQuestion = new QuestionQuery();
+        public IActionResult Index()
+        {
+            try
+            {
+                _rep.Connect();
+                Form form = _rep.getForm(1);
+                if (form == null)
+                {
+                    return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
+                }
+                else
+                {
+                    return View(form);
+                }
+
+            }
+            catch (DbException)
+            {
+                return View("_Message", new Message("Datenbankfehler", "Es gab ein Problem mit der Datenbank!", "Bitte versuchen Sie es später erneut!"));
+            }
+            finally
+            {
+                _rep.Disconnect();
+            }
+
         }
 
         [HttpGet]
@@ -62,11 +87,16 @@ namespace socialforms.Controllers {
             return View(qstData);
         }
 
-        private void ValidateRegistrationData(Form f)
+        private void ValidateRegistrationData(Question q)
         {
-            if (f == null)
+            if (q == null)
             {
                 return;
+            }
+
+            if ((q.Qtext == null))
+            {
+                ModelState.AddModelError("Question", "Bitte eine Frage eingeben");
             }
         }
 
