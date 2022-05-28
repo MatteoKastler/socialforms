@@ -105,3 +105,7 @@ div.absolute {
     width: 200px;
     height: 120px;
 }
+
+#inputFormRow{
+    display:block;
+}
