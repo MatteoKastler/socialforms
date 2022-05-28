@@ -7,6 +7,10 @@ namespace socialforms.Models.DB
 {
     interface IFormQuery
     {
+        // zur DB verbinden
+        void Connect();
+        // Verbindung zur DB beenden
+        void Disconnect();
         Form getForm(int formId);
         bool Insert(Form form);
         bool Delete(int formId);

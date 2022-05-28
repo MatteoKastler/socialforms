@@ -52,6 +52,7 @@ namespace socialforms.Models
         public String TextAnswer{ get; set; }
         public int ChoiceAnswer { get; set; }
 
+        public int SliderAnswer { get; set; }
 
     }
 }

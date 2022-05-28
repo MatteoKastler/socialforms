@@ -7,7 +7,7 @@ namespace socialforms.Models.DB
 {
 
     // TODO: asynchrone Programmierung 
-    interface IUsersquery
+   interface IUsersquery
     {
         // zur DB verbinden
         void Connect();

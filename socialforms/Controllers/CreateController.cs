@@ -87,16 +87,11 @@ namespace socialforms.Controllers {
             return View(qstData);
         }
 
-        private void ValidateRegistrationData(Question q)
+        private void ValidateRegistrationData(Form f)
         {
-            if (q == null)
+            if (f == null)
             {
                 return;
-            }
-
-            if ((q.Qtext == null))
-            {
-                ModelState.AddModelError("Question", "Bitte eine Frage eingeben");
             }
         }
 
