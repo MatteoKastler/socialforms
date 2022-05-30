@@ -27,6 +27,10 @@ namespace socialforms.Controllers {
                 } else {
                     Debug.WriteLine(user.Username);
                     ViewBag.forms = _form.getForms(user.PersonId); // --> funzt alles super, da kommen forms raus und alles
+                    foreach(Form f in ViewBag.forms) {
+                        f.answers = _form.cntUseranswers(f.FormId);
+                        f.questions = _form.cntQuestions(f.FormId);
+                    }
                     return View(user);
                 }
             }catch (DbException e) {

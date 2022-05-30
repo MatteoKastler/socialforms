@@ -55,6 +55,7 @@ namespace socialforms.Models.DB.sql
             getForm.Parameters.Add(paramId);
 
             using (DbDataReader reader = getForm.ExecuteReader()) {
+                reader.Read();
                 return Convert.ToInt32(reader["questioncnt"]);
             }
         }
@@ -64,7 +65,7 @@ namespace socialforms.Models.DB.sql
                 return -1;
             }
             DbCommand getForm = this._conn.CreateCommand();
-            getForm.CommandText = "SELECT COUNT(*) AS answers from answers WHERE questionId = @formId";
+            getForm.CommandText = "SELECT COUNT(*) AS cntanswers from answers WHERE questionId = @formId";
 
             DbParameter paramId = getForm.CreateParameter();
             paramId.ParameterName = "FormId";
@@ -74,7 +75,8 @@ namespace socialforms.Models.DB.sql
             getForm.Parameters.Add(paramId);
 
             using (DbDataReader reader = getForm.ExecuteReader()) {
-                return Convert.ToInt32(reader["questions"]);
+                reader.Read();
+                return Convert.ToInt32(reader["cntanswers"]);
             }
         }
 
