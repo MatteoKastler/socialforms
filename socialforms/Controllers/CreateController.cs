@@ -12,20 +12,18 @@ namespace socialforms.Controllers {
     public class CreateController : Controller {
 
         private IFormQuery _rep = new FormQuery();
-        private IQuestionQuery fQuestion = new QuestionQuery();
+        //private IQuestionQuery fQuestion = new QuestionQuery();
         public IActionResult Index()
         {
             try
             {
-                _rep.Connect();
-                Form form = _rep.getForm(1);
-                if (form == null)
+                if (!_rep.Connect())
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
                 }
                 else
                 {
-                    return View(form);
+                    return View();
                 }
 
             }
@@ -40,14 +38,8 @@ namespace socialforms.Controllers {
 
         }
 
-        [HttpGet]
-        public IActionResult Createform()
-        {
-            return View();
-        }
-
         [HttpPost]
-        public IActionResult Createform(Form qstData)
+        public IActionResult Index(Form qstData)
         {
             if (qstData == null)
             {

@@ -15,16 +15,7 @@
             </div>
         </div>
     </p>
-    @if (false) //keine Forms in der Tabelle
-    {
-       <p>
-           Es sind keine Form in der Tabelle vorhanden
-       </p>
-    }
-    else
-    {
-        //alle User in Tabellenform ausgeben 
-               <table>
+            <table>
                    <thead>
                        <tr>
                            <th colspan="7">Meine Umfragen</th>
@@ -37,15 +28,14 @@
                            <th>Anzahl der Fragen</th>
                            <th>Anzahl der Antworten</th>
                        </tr>
-                       @*@foreach (Form f in Model.) // ned model sondern iwas um de liste zu kriegen
+                       @foreach (Form f in ViewBag.forms)
                        {
                            <tr>
-                               <td>Hier kommt der Name hin </td>
-                               <td>Hier kommt das Datum hin</td>
-                               <td>Hier kommt die Anzahl der Fragen hin </td>
+                               <td>@f.FormName</td>
+                               <td>@f.CreateDate</td>
+                               <td>Hier kommt die Anzahl der Fragen </td>
                                <td>Hier kommt die Anzahl der Antworten hin</td>
                                <td>
-                                    senden an den User-Controller und dort an die Action (Methode) delete
                                    <form action="/user/delete/@f.FormId" method="get">
                                        <input type="submit" value="löschen" />
                                    </form>
@@ -56,7 +46,7 @@
                                    </form>
                                </td>
                            </tr>
-                       }*@
+                       }
                    </tbody>
                    <tfoot>
                        <tr>
@@ -64,6 +54,4 @@
                        </tr>
                    </tfoot>
                </table>
-    }
-
-}
+ }
