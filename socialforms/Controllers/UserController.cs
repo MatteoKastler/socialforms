@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using socialforms.Models;
 using socialforms.Models.DB;
-using socialforms.Models.DB.sql;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,19 +13,13 @@ using System.Threading.Tasks;
 namespace socialforms.Controllers {
     public class UserController : Controller {
 
-        private IUsersquery uQuery = new Userquery();
-        private IFormQuery fQuery = new FormQuery();
-        dynamic uModel;
+        private IUsersquery _rep = new Userquery();
         public IActionResult Index()
         {
             try
             {
-                uQuery.Connect();
-                fQuery.Connect();
-                uModel = new ExpandoObject();
-                uModel.user = u;
-                uModel.forms = fQuery.get;
-                User user = uQuery.GetUser(1); //get user from session
+                _rep.Connect();
+                User user = _rep.GetUser(1); //get user from session
                 if (user == null)
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
@@ -45,8 +37,7 @@ namespace socialforms.Controllers {
             }
             finally
             {
-                uQuery.Disconnect();
-                fQuery.Disconnect();
+                _rep.Disconnect();
             }
 
 
@@ -89,8 +80,8 @@ namespace socialforms.Controllers {
             {
                 try
                 {
-                    uQuery.Connect();
-                    if (uQuery.Insert(userDataFromForm))
+                    _rep.Connect();
+                    if (_rep.Insert(userDataFromForm))
                     {
                         return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
                     }
@@ -106,7 +97,7 @@ namespace socialforms.Controllers {
                 }
                 finally
                 {
-                    uQuery.Disconnect();
+                   // _rep.Disconnect();
                 }
 
 
@@ -115,7 +106,7 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-        User u;
+
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
@@ -123,21 +114,17 @@ namespace socialforms.Controllers {
             {
                 return RedirectToAction("Login");
             }
-            try {
-                uQuery.Connect();
-                u = uQuery.Login(userDataFromForm.Username, userDataFromForm.Password);
 
-                if (u == null) {
-                    return View("_Message", new Message("Login", "LoginFehler", "Kein user zu den Daten gefunden oder Passwort falsch"));//user in session speichern?
-                } else {
-                    return View("Index", u); //nit u sondern des mixmodel aus user und zeug für tabelle
-                }
-            }catch(DbException e) {
+            ValidateRegistrationData(userDataFromForm);
 
-            } finally {
-                uQuery.Disconnect();
+            if (ModelState.IsValid)
+            {
+
+
+                return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
+
             }
-            return null;
+            return View(userDataFromForm);
         }
 
         [HttpPost]
@@ -173,25 +160,18 @@ namespace socialforms.Controllers {
             }
 
             //EMail
-            Debug.WriteLine(u.Email);
-            if (!IsValidEmail(u.Email))
+            string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+
+            if (Regex.IsMatch(pattern, u.Email)==false)
             {
                 ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
 
-        }
-        bool IsValidEmail(string email) {
-            var trimmedEmail = email.Trim();
-
-            if (trimmedEmail.EndsWith(".")) {
-                return false;
-            }
-            try {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == trimmedEmail;
-            } catch {
-                return false;
-            }
+            //Birthdate
+            /*if (DateTime.TryParseExact(str, "MM/dd/yyyy", null, DateTimeStyles.None, u.Birthdate) == true)
+            {
+                ModelState.AddModelError("Birthdate", "Bitte ein gültiges Datum im Format MM/dd/yyyy eingeben");
+            }*/
         }
     }
    

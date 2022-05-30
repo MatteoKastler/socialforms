@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace socialforms.Models.DB.sql {
     public class QuestionQuery : IQuestionQuery {
-        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
+        private string _connString = "Server=localhost;database=socialforms;user=root;password=MBigubb75#"; //den muss ma anpassen an eigene Datenbank
         DbConnection _conn;
 
         public void Connect() {
