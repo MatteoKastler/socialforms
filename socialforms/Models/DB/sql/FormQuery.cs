@@ -107,7 +107,27 @@ namespace socialforms.Models.DB.sql
                 return temp;
             }
         }
-    
+        public List<Form> GetForms(int userId) {
+            List<Form> forms = new List<Form>();
+
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return null;
+            }
+            DbCommand cmdAllForms = this._conn.CreateCommand();
+            cmdAllForms.CommandText = "SELECT * from Forms where ";
+            using (DbDataReader reader = cmdAllForms.ExecuteReader()) {
+                while (reader.Read()) {
+                    forms.Add(new Form {
+                        FormId= Convert.ToInt32(reader["formId"]),
+                        UserId = Convert.ToInt32(reader["userId"]),
+                        FormName = Convert.ToString(reader["formName"]),
+                        CreateDate = Convert.ToDateTime(reader["createDate"])
+                    });
+                }
+            }
+            return forms;
+        }
+
         public List<int> GetQuestions(int formId) {
             throw new NotImplementedException();
         }
