@@ -1,19 +1,17 @@
-﻿--DROP DATABASE IF EXISTS socialforms;
---CREATE DATABASE IF NOT EXISTS socialforms;
+﻿--CREATE DATABASE IF NOT EXISTS socialforms;
 --USE socialforms;
 
 --CREATE TABLE users(
 --    userId INT NOT NULL AUTO_INCREMENT,
 --    userName VARCHAR(255) NOT NULL,
---    pass VARCHAR(385) NOT NULL,
+--    pwdHash VARCHAR(385) NOT NULL, --hier muss ein hash rein dies das, kein Klartext
 --    birthDate DATE,
 --    email VARCHAR(255) NOT NULL,
 --    gender INT,
 --    userDescription VARCHAR(1024),
 --    picture MEDIUMBLOB,
 
---    PRIMARY KEY (userId)
-    
+--    PRIMARY KEY (userId))
 --);
 
 --CREATE TABLE forms(
@@ -42,9 +40,8 @@
 --    userId INT NOT NULL,
 --    textAnswer VARCHAR(1024),
 --    choiceAnswer INT,
---    sliderAnswer INT
     
 --    PRIMARY KEY(answerId),
 --    FOREIGN KEY(questionId) REFERENCES questions(questionId),
---    FOREIGN KEY(userId) REFERENCES answers(answerId)
+--    FOREIGN KEY(userId) REFERENCES answers(answerId)*/
 --);

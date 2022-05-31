@@ -58,6 +58,7 @@ namespace socialforms.Models.DB.sql {
 
             getForm.Parameters.Add(paramId);
             using (DbDataReader reader = getForm.ExecuteReader()) {
+                reader.Read();
                 Question  temp = new Question {
                     QuestionId = Convert.ToInt32(reader["questionId"]),
                     FormId = Convert.ToInt32(reader["formId"]),

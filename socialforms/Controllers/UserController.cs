@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using socialforms.Models;
 using socialforms.Models.DB;
+using socialforms.Models.DB.sql;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -14,30 +15,30 @@ namespace socialforms.Controllers {
     public class UserController : Controller {
 
         private IUsersquery _rep = new Userquery();
+        private IFormQuery _form = new FormQuery();
         public IActionResult Index()
         {
-            try
-            {
+            try {
                 _rep.Connect();
+                _form.Connect();
                 User user = _rep.GetUser(1); //get user from session
-                if (user == null)
-                {
+                if (user == null) {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
-                }
-                else
-                {
+                } else {
                     Debug.WriteLine(user.Username);
-                    return View(user); //WICHTIG: in der Index view vom user braucht die tabelle außer dem user no a anderes model
+                    ViewBag.forms = _form.getForms(user.PersonId); // --> funzt alles super, da kommen forms raus und alles
+                    foreach(Form f in ViewBag.forms) {
+                        f.answers = _form.cntUseranswers(f.FormId);
+                        f.questions = _form.cntQuestions(f.FormId);
+                    }
+                    return View(user);
                 }
-            }
-            catch (DbException e)
-            {
+            }catch (DbException e) {
                 Debug.WriteLine(e.Message);
                 return View("_Message", new Message("Datenbankfehler", "Es gab ein Problem mit der Datenbank!", "Bitte versuchen Sie es später erneut!"));
-            }
-            finally
-            {
+            } finally {
                 _rep.Disconnect();
+                _form.Disconnect();
             }
 
 

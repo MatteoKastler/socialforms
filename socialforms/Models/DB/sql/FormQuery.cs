@@ -11,21 +11,24 @@ namespace socialforms.Models.DB.sql
 {
     public class FormQuery : IFormQuery {
 
-        private string _connString = "Server=localhost;database=socialforms;user=root;password=MBigubb75#"; //den muss ma anpassen an eigene Datenbank
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor"; //den muss ma anpassen an eigene Datenbank
         DbConnection _conn;
 
-        public void Connect()
+        public bool Connect()
         {
             if (this._conn == null)
             {
                 this._conn = new MySqlConnection(this._connString);
-                Debug.WriteLine("connection has been created");
+                Debug.WriteLine("FormQuery: connection has been created");
             }
             if (this._conn.State != System.Data.ConnectionState.Open)
             {
                 this._conn.Open();
-                Debug.WriteLine("state has been set to open");
+                Debug.WriteLine("FormQuery: state has been set to open");
             }
+            if (this._conn.State == System.Data.ConnectionState.Open) {
+                return true;
+            } else { return false; }
         }
 
         public void Disconnect()
@@ -52,6 +55,7 @@ namespace socialforms.Models.DB.sql
             getForm.Parameters.Add(paramId);
 
             using (DbDataReader reader = getForm.ExecuteReader()) {
+                reader.Read();
                 return Convert.ToInt32(reader["questioncnt"]);
             }
         }
@@ -61,7 +65,7 @@ namespace socialforms.Models.DB.sql
                 return -1;
             }
             DbCommand getForm = this._conn.CreateCommand();
-            getForm.CommandText = "SELECT COUNT(*) AS answers from answers WHERE questionId = @formId";
+            getForm.CommandText = "SELECT COUNT(*) AS cntanswers from answers WHERE questionId = @formId";
 
             DbParameter paramId = getForm.CreateParameter();
             paramId.ParameterName = "FormId";
@@ -71,7 +75,8 @@ namespace socialforms.Models.DB.sql
             getForm.Parameters.Add(paramId);
 
             using (DbDataReader reader = getForm.ExecuteReader()) {
-                return Convert.ToInt32(reader["questions"]);
+                reader.Read();
+                return Convert.ToInt32(reader["cntanswers"]);
             }
         }
 
@@ -105,6 +110,7 @@ namespace socialforms.Models.DB.sql
 
             getForm.Parameters.Add(paramId);
             using (DbDataReader reader = getForm.ExecuteReader()) {
+                reader.Read();
                 Form temp = new Form { 
                     FormId = Convert.ToInt32(reader["formId"]),
                     UserId = Convert.ToInt32(reader["userId"]),
@@ -114,7 +120,34 @@ namespace socialforms.Models.DB.sql
                 return temp;
             }
         }
-    
+        public List<Form> getForms(int userId) {
+            List<Form> forms = new List<Form>();
+
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
+                return null;
+            }
+            DbCommand cmdAllForms = this._conn.CreateCommand();
+            cmdAllForms.CommandText = "SELECT * from Forms where userId = @userId";
+
+            DbParameter paramId = cmdAllForms.CreateParameter();
+            paramId.ParameterName = "userId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = userId;
+
+            cmdAllForms.Parameters.Add(paramId);
+            using (DbDataReader reader = cmdAllForms.ExecuteReader()) {
+                while (reader.Read()) {
+                    forms.Add(new Form {
+                        FormId= Convert.ToInt32(reader["formId"]),
+                        UserId = Convert.ToInt32(reader["userId"]),
+                        FormName = Convert.ToString(reader["formName"]),
+                        CreateDate = Convert.ToDateTime(reader["createDate"])
+                    });
+                }
+            }
+            return forms;
+        }
+
         public List<int> GetQuestions(int formId) {
             throw new NotImplementedException();
         }
