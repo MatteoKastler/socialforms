@@ -5,48 +5,53 @@
 
 @if (Model != null)
 {
+<div class="parent" style="display:flex;">
     <p>
-        <div class="card" style="width:400px">
+        <div class="card" style="width:400px;">
             <img class="card-img-top" src="/res/Download.jpg" alt="Card image" style="width:100%">
             <div class="card-body">
-                <h4 class="card-title">@Model.Username&nbsp;&nbsp;&nbsp;&nbsp; <a href=/user/settings class="btn btn-primary" target="_blank" rel="noopener noreferrer">Settings</a> </h4> 
+                <h4 class="card-title">@Model.Username&nbsp;&nbsp;&nbsp;&nbsp; <a href=/user/settings class="btn btn-primary" target="_blank" rel="noopener noreferrer">Settings</a> </h4>
 
                 <p class="card-text">@Model.UserDescription</p>
             </div>
         </div>
-    </p>
-            <table>
-                   <thead>
-                       <tr>
-                           <th colspan="7">Meine Umfragen</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <tr>
-                           <th>Name</th>
-                           <th>Erstellungsdatum</th>
-                           <th>Anzahl der Fragen</th>
-                           <th>Anzahl der Antworten</th>
-                       </tr>
-                       @foreach (Form f in ViewBag.forms)
-                       {
-                           <tr>
-                               <td>@f.FormName</td>
-                               <td>@f.CreateDate.ToString("dd/MM/yyyy")</td>
-                               <td>@f.questions </td>
-                               <td>@f.answers</td>
-                               <td>
-                                   <form action="/user/delete/@f.FormId" method="get">
-                                       <input type="submit" value="löschen" />
-                                   </form>
-                               </td>
-                               <td>
-                                   <form action="/user/update/@f.FormId" method="get">
-                                       <input type="submit" value="ändern" />
-                                   </form>
-                               </td>
-                           </tr>
-                       }
-                   </tbody>
-               </table>
+    </p> &nbsp;&nbsp;&nbsp;&nbsp;
+
+    <div class="table" style="width:700px;">
+        <table border="2" bordercolordark="#800000" bordercolorlight="#FF0000">
+            <thead>
+                <tr>
+                    <th colspan="7">Meine Umfragen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Erstellungsdatum</th>
+                    <th>Anzahl der Fragen</th>
+                    <th>Anzahl der Antworten</th>
+                </tr>
+                @foreach (Form f in ViewBag.forms)
+                {
+                    <tr>
+                        <td>@f.FormName</td>
+                        <td>@f.CreateDate.ToString("dd/MM/yyyy")</td>
+                        <td>@f.questions </td>
+                        <td>@f.answers</td>
+                        <td>
+                            <form action="/user/delete/@f.FormId" method="get">
+                                <input type="submit" value="löschen" />
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/user/update/@f.FormId" method="get">
+                                <input type="submit" value="ändern" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
  }
