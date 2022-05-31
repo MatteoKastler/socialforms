@@ -19,9 +19,9 @@ a.navbar-brand {
 
 
 /* Provide sufficient contrast against white background */
-/*a {
+a {
   color: #0366d6;
-}*/
+}
 
 .btn-primary {
   color: #fff;
@@ -35,8 +35,6 @@ a.navbar-brand {
   border-color: #1861ac;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   font-size: 14px;
 }
@@ -145,7 +143,7 @@ div.absolute {
     padding-right: 25px;
 }
 
-    .btn-create:hover span:after {
-        opacity: 1;
-        right: 0;
-    }
+.btn-create:hover span:after {
+    opacity: 1;
+    right: 0;
+}
