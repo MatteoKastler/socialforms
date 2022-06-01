@@ -42,9 +42,10 @@ namespace socialforms.Models
 
         public DateTime CreateDate { get; set; }
 
-
-
-
+        public static explicit operator Form(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

@@ -1,21 +1,13 @@
-﻿@model socialforms.Models.Form
+﻿@model socialforms.Models.FormWithQuestions
 @{
     ViewData["Title"] = "Create Form";
 }
 
 <h1>Create your own socialform</h1>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Create your own socialform!</title>
-
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
+<form asp-controller="create" asp-action="InsertQst" method="post">
     <div class="container" style="max-width: 700px;">
 
         <div class="text-center" style="margin: 20px 0px 20px 0px;">
@@ -28,53 +20,14 @@
                 <div class="col-lg-12">
                     <div id="qstType">
                         <div class="input-group mb-3">
-                            <span asp-validation-for="FormName"></span>
-                            <input type="text" name="title[]" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
+                            <label asp-for="FormName.FormName"></label>
+                            <span asp-validation-for="FormName.FormName"></span>
+                            <input type="text" asp-for="FormName.FormName" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
                         </div>
                     </div>
                 </div>
                 <br />
             </div>
-
-            @*<form method="post" action="">
-        <div class="row">
-            <div class="col-lg-12">
-                <div id="inputFormRow">
-                    <div class="input-group mb-3">
-                        <span asp-validation-for="questions"></span>
-                        <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">
-                        <div class="input-group-append">
-                            <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                        </div>
-                    </div>
-                </div><br />*@
-
-            @*<div id="inputFormRow">
-            <div class="input-group mb-3">
-                <span asp-validation-for="Qtext"></span>
-                <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
-                <input type="checkbox" name="answer1"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #1" autocomplete="off"><br>
-                <input type="checkbox" name="answer2"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #2" autocomplete="off"><br>
-                <input type="checkbox" name="answer3"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #3" autocomplete="off"><br>
-                <div class="input-group-append">
-                    <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                </div>
-            </div>
-        </div><br />*@
-
-            @*<div id="inputFormRow">
-            <div class="input-group mb-3">
-                <div class="slidecontainer">
-                    <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
-                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                </div>
-                <div class="input-group-append">
-                    <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                </div>
-            </div>
-        </div>*@
-
-
 
             <div id="questions"></div>
 
@@ -87,71 +40,52 @@
             </p>
 
         </div>
-                    </div>
-                @*</form>*@
-            </div>
+    </div>
 
-            <script type="text/javascript">
-                // add row
-                $("#addRow").click(function () {
-                    var html = '';
-                    html += '<div id="inputFormRow">';
-                    html += '<div class="input-group mb-3">';
-                    html += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
-                    html += '<div class="input-group-append">';
-                    html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-                    html += '</div>';
-                    html += '</div>';
-                   
-                    $('#questions').append(html);
-                });
+    <script type="text/javascript">
+        // add row
+        $("#addRow").click(function () {
+            var html = '';
+            html += '<div id="inputFormRow">';
+            html += '<div class="input-group mb-3">';
+            html += '<input type="text" name="Questions" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
+            html += '<div class="input-group-append">';
+            html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+            html += '</div>';
+            html += '</div>';
 
-                //$("#multipleChoice").click(function () {
-                //    var mc = '';
-                //    mc += '<div id="inputFormRow">';
-                //    mc += '<div class="input-group mb-3">';
-                //    mc += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
-                //    mc += '<input type="checkbox" name="favorite_pet" value="Cats"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br>'
-                //    mc += '<input type="checkbox" name="favorite_pet" value="Cats"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br>'
-                //    mc += '<input type="checkbox" name="favorite_pet" value="Cats"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br>'
-                //    mc += '<div class="input-group-append">';
-                //    mc += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-                //    mc += '</div>';
-                //    mc += '</div>';
+            $('#questions').append(html);
+        });
 
-                //    $('#newMultipleChoice').append(mc);
-                //})
+        $("#slider").click(function () {
+            var sl = '';
+            sl += '<div id="inputFormRow">';
+            sl += '<div class="input-group mb-3">';
+            sl += '<div class="slidecontainer">';
+            sl += '<input type="text" name="Questionss" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
+            sl += '<input type="range" min="1" max="100" value="50" class="slider" id="myRange">';
+            sl += '</div>';
+            sl += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+            sl += '</div>';
+            sl += '</div>';
 
-                $("#slider").click(function () {
-                    var sl = '';
-                    sl += '<div id="inputFormRow">';
-                    sl += '<div class="input-group mb-3">';
-                    sl += '<div class="slidecontainer">';
-                    sl += '<input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
-                    sl += '<input type="range" min="1" max="100" value="50" class="slider" id="myRange">';
-                    sl += '</div>';
-                    sl += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-                    sl += '</div>';
-                    sl += '</div>';
-
-                    $('#questions').append(sl);
-                })
+            $('#questions').append(sl);
+        })
 
 
-                // remove row
-                $(document).on('click', '#removeRow', function () {
-                    $(this).closest('#inputFormRow').remove();
-                });
+        // remove row
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+        });
 
-                var slider = document.getElementById("myRange");
-                var output = document.getElementById("demo");
-                output.innerHTML = slider.value; // Display the default slider value
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value; // Display the default slider value
 
-                // Update the current slider value (each time you drag the slider handle)
-                slider.oninput = function () {
-                    output.innerHTML = this.value;
-                }
+        // Update the current slider value (each time you drag the slider handle)
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+        }
 
-            </script>
-</body>
-</html>
+    </script>
+</form>
