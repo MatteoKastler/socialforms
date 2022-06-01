@@ -111,21 +111,24 @@ namespace socialforms.Controllers {
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
+            _rep.Connect();
             if (userDataFromForm == null)
             {
-                return RedirectToAction("Login");
+                return View();
             }
+            Debug.WriteLine(userDataFromForm.Password);
 
-            ValidateRegistrationData(userDataFromForm);
-
-            if (ModelState.IsValid)
+            User u = _rep.Login(userDataFromForm.Username, userDataFromForm.Password);
+            if (u != null)
             {
 
-
+                //TODO: hier session zeugs einfügen
                 return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
 
+            } else {
+                return View("_Message", new Message("Login", "Daten konnten nicht geprüft werde"));
             }
-            return View(userDataFromForm);
+            
         }
 
         [HttpPost]

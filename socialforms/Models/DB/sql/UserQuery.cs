@@ -157,7 +157,7 @@ namespace socialforms.Models.DB
             }
             DbCommand login = this._conn.CreateCommand();
 
-            login.CommandText = "SELECT userId,pwdHash FROM users WHERE userName = @user";
+            login.CommandText = "SELECT userId,pass FROM users WHERE userName = @user";
 
             DbParameter paramUN = login.CreateParameter();
             paramUN.ParameterName = "user";
@@ -165,15 +165,15 @@ namespace socialforms.Models.DB
             paramUN.Value = username;
 
             login.Parameters.Add(paramUN);
-            if(login.ExecuteNonQuery() == 1) {
                 DbDataReader reader = login.ExecuteReader();
                 reader.Read();
-                if (String.Equals(reader["pwdHash"], ComputeSha256Hash(password))) {
-                    return GetUser(Convert.ToInt32(reader["userId"]));
+                int tmp = Convert.ToInt32(reader["userId"]);
+                if (String.Equals(reader["pass"], ComputeSha256Hash(password))) {
+                    reader.Close();
+                    return GetUser(tmp);
                 } else {
                     Console.WriteLine("password is not correct");  //TODO: muss auf da website dann iwo hin
                 }
-            }
             Console.WriteLine("multiple or no user found");  //TODO: muss auch auf die website
             return null;
         }
