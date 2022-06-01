@@ -94,15 +94,17 @@ namespace socialforms.Models.DB
 
             QUser.Parameters.Add(paramId);
             using (DbDataReader reader = QUser.ExecuteReader()) {
-                reader.Read();
-                User temp = new User{
+                if (reader.HasRows) {
+                    reader.Read();
+                    User temp = new User {
                         PersonId = Convert.ToInt32(reader["userId"]),
                         Username = Convert.ToString(reader["userName"]),
                         Birthdate = Convert.ToDateTime(reader["birthDate"]),
                         Gender = (Gender)Convert.ToInt32(reader["gender"]),
                         Email = Convert.ToString(reader["email"])
                     };
-                return temp;
+                    return temp;
+                } else { return null; }
             }  
         }
 

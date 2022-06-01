@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace socialforms.Controllers {
     public class UserController : Controller {
@@ -21,9 +22,9 @@ namespace socialforms.Controllers {
             try {
                 _rep.Connect();
                 _form.Connect();
-                User user = _rep.GetUser(1); //get user from session
+                User user = _rep.GetUser(Convert.ToInt32(HttpContext.Session.GetInt32(curUserId)));
                 if (user == null) {
-                    return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
+                    return RedirectToAction("Login");
                 } else {
                     Debug.WriteLine(user.Username);
                     ViewBag.forms = _form.getForms(user.PersonId); // --> funzt alles super, da kommen forms raus und alles
@@ -58,12 +59,6 @@ namespace socialforms.Controllers {
         {
             return View();
         }
-        public IActionResult createform()
-        {
-            return View();
-        }
-
-
 
         [HttpPost]
         public IActionResult Registration(User userDataFromForm)
@@ -84,7 +79,7 @@ namespace socialforms.Controllers {
                     _rep.Connect();
                     if (_rep.Insert(userDataFromForm))
                     {
-                        return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
+                        return RedirectToAction("Index");
                     }
                     else
                     {
@@ -107,7 +102,7 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-
+        const string curUserId = "-1";
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
@@ -121,9 +116,8 @@ namespace socialforms.Controllers {
             User u = _rep.Login(userDataFromForm.Username, userDataFromForm.Password);
             if (u != null)
             {
-
-                //TODO: hier session zeugs einfügen
-                return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
+                HttpContext.Session.SetInt32(curUserId, u.PersonId);
+                return RedirectToAction("Index");
 
             } else {
                 return View("_Message", new Message("Login", "Daten konnten nicht geprüft werde"));
@@ -174,7 +168,7 @@ namespace socialforms.Controllers {
             var trimmedEmail = email.Trim();
 
             if (trimmedEmail.EndsWith(".")) {
-                return false; // suggested by @TK-421
+                return false;
             }
             try {
                 var addr = new System.Net.Mail.MailAddress(email);
