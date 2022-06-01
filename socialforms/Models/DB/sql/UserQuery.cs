@@ -11,7 +11,7 @@ namespace socialforms.Models.DB
 {
     public class Userquery : IUsersquery
     {  
-        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
+        private string _connString = "Server=localhost;Port=3306;Database=socialforms;uid=root;pwd=MBigubb75#";
         DbConnection _conn;
 
 
@@ -19,12 +19,12 @@ namespace socialforms.Models.DB
         {
             if (this._conn == null) {
                 this._conn = new MySqlConnection(this._connString);
-                Debug.WriteLine("connection has been created");
+                Debug.WriteLine("Userquery: connection has been created");
             }
             if(this._conn.State != System.Data.ConnectionState.Open)
             {
                 this._conn.Open();
-                Debug.WriteLine("state has been set to open");
+                Debug.WriteLine("Userquery: state has been set to open");
             }
         } 
 
