@@ -111,21 +111,24 @@ namespace socialforms.Controllers {
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
+            _rep.Connect();
             if (userDataFromForm == null)
             {
-                return RedirectToAction("Login");
+                return View();
             }
+            Debug.WriteLine(userDataFromForm.Password);
 
-            ValidateRegistrationData(userDataFromForm);
-
-            if (ModelState.IsValid)
+            User u = _rep.Login(userDataFromForm.Username, userDataFromForm.Password);
+            if (u != null)
             {
 
-
+                //TODO: hier session zeugs einfügen
                 return View("_Message", new Message("Login", "Sie haben sich erfolgreich eingelogt."));
 
+            } else {
+                return View("_Message", new Message("Login", "Daten konnten nicht geprüft werde"));
             }
-            return View(userDataFromForm);
+            
         }
 
         [HttpPost]
@@ -161,18 +164,24 @@ namespace socialforms.Controllers {
             }
 
             //EMail
-            string pattern = @"\A(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
 
-            if (Regex.IsMatch(pattern, u.Email)==false)
-            {
+            if (!IsValidEmail(u.Email)) {
                 ModelState.AddModelError("Password", "Bitte geben Sie eine gültige EMail-Adresse im Format xyz@abc.de ein!");
             }
 
-            //Birthdate
-            /*if (DateTime.TryParseExact(str, "MM/dd/yyyy", null, DateTimeStyles.None, u.Birthdate) == true)
-            {
-                ModelState.AddModelError("Birthdate", "Bitte ein gültiges Datum im Format MM/dd/yyyy eingeben");
-            }*/
+        }
+        bool IsValidEmail(string email) {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith(".")) {
+                return false; // suggested by @TK-421
+            }
+            try {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            } catch {
+                return false;
+            }
         }
     }
    

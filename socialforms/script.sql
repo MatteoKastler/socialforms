@@ -4,7 +4,7 @@
 --CREATE TABLE users(
 --    userId INT NOT NULL AUTO_INCREMENT,
 --    userName VARCHAR(255) NOT NULL,
---    pwdHash VARCHAR(385) NOT NULL, --hier muss ein hash rein dies das, kein Klartext
+--    pass VARCHAR(385) NOT NULL, --hier muss ein hash rein dies das, kein Klartext
 --    birthDate DATE,
 --    email VARCHAR(255) NOT NULL,
 --    gender INT,

@@ -25,72 +25,68 @@
 
         <div class="type">
             <div class="row">
-            <div class="col-lg-12">
-                <div id="qstType">
-                    <div class="input-group mb-3">
-                        <span asp-validation-for="FormName"></span>
-                        <input type="text" name="title[]" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
+                <div class="col-lg-12">
+                    <div id="qstType">
+                        <div class="input-group mb-3">
+                            <span asp-validation-for="FormName"></span>
+                            <input type="text" name="title[]" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
+                        </div>
                     </div>
-                </div>
                 </div>
                 <br />
             </div>
 
-                @*<form method="post" action="">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div id="inputFormRow">
-                                <div class="input-group mb-3">
-                                    <span asp-validation-for="questions"></span>
-                                    <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">
-                                    <div class="input-group-append">
-                                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                                    </div>
-                                </div>
-                            </div><br />*@
-
-                            @*<div id="inputFormRow">
-                                <div class="input-group mb-3">
-                                    <span asp-validation-for="Qtext"></span>
-                                    <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
-                                    <input type="checkbox" name="answer1"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #1" autocomplete="off"><br>
-                                    <input type="checkbox" name="answer2"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #2" autocomplete="off"><br>
-                                    <input type="checkbox" name="answer3"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #3" autocomplete="off"><br>
-                                    <div class="input-group-append">
-                                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                                    </div>
-                                </div>
-                            </div><br />*@
-
-                            @*<div id="inputFormRow">
-                                <div class="input-group mb-3">
-                                    <div class="slidecontainer">
-                                        <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
-                                        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                                    </div>
-                                </div>
-                            </div>*@
-
-
-
-                            <div id="newTextField"></div><br />
-                            <button id="addRow" type="button" class="btn btn-info">New Text-Question</button><br />
-
-                            @*<div id="newMultipleChoice"></div><br />
-                            <button id="multipleChoice" type="button" class="btn btn-info">New MultipleChoice-Question</button><br />*@
-
-                            <div id="newSlider"></div><br />
-                            <button id="slider" type="button" class="btn btn-info">New Slider</button><br />
-
-                            <p>
-                                <input type="submit" value="absenden" />
-                                <input type="reset" value="abbrechen" />
-                            </p>
-
+            @*<form method="post" action="">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="inputFormRow">
+                    <div class="input-group mb-3">
+                        <span asp-validation-for="questions"></span>
+                        <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">
+                        <div class="input-group-append">
+                            <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
                         </div>
+                    </div>
+                </div><br />*@
+
+            @*<div id="inputFormRow">
+            <div class="input-group mb-3">
+                <span asp-validation-for="Qtext"></span>
+                <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
+                <input type="checkbox" name="answer1"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #1" autocomplete="off"><br>
+                <input type="checkbox" name="answer2"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #2" autocomplete="off"><br>
+                <input type="checkbox" name="answer3"><input type="text" name="title[]" class="form-control m-input" placeholder="Enter possible Answer #3" autocomplete="off"><br>
+                <div class="input-group-append">
+                    <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                </div>
+            </div>
+        </div><br />*@
+
+            @*<div id="inputFormRow">
+            <div class="input-group mb-3">
+                <div class="slidecontainer">
+                    <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />
+                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                </div>
+                <div class="input-group-append">
+                    <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                </div>
+            </div>
+        </div>*@
+
+
+
+            <div id="questions"></div>
+
+            <button id="addRow" type="button" class="btn btn-info">New Text-Question</button>
+            <button id="slider" type="button" class="btn btn-info">New Slider</button><br />
+
+            <p>
+                <input type="submit" value="absenden" />
+                <input type="reset" value="abbrechen" />
+            </p>
+
+        </div>
                     </div>
                 @*</form>*@
             </div>
@@ -106,9 +102,8 @@
                     html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
                     html += '</div>';
                     html += '</div>';
-                    html += '<br />'
-
-                    $('#newTextField').append(html);
+                   
+                    $('#questions').append(html);
                 });
 
                 //$("#multipleChoice").click(function () {
@@ -138,9 +133,8 @@
                     sl += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
                     sl += '</div>';
                     sl += '</div>';
-                    sl += '<br />'
 
-                    $('#newSlider').append(sl);
+                    $('#questions').append(sl);
                 })
 
 
