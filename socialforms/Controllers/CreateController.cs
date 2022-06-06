@@ -7,18 +7,24 @@ using socialforms.Models;
 using System.Data.Common;
 using socialforms.Models.DB.sql;
 using socialforms.Models.DB;
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
+
 
 namespace socialforms.Controllers {
     public class CreateController : Controller
     {
-
+        const String curUserId = "-1";
         private IFormQuery _rep = new FormQuery();
         private IQuestionQuery _qstrep = new QuestionQuery();
-        //private IQuestionQuery fQuestion = new QuestionQuery();
         public IActionResult Index()
         {
             try
             {
+                if (HttpContext.Session.GetInt32(curUserId) == null) {
+                    return RedirectToAction("Login", "User");
+                }
+                Debug.WriteLine(HttpContext.Session.GetInt32(curUserId));
                 if (!_rep.Connect())
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
@@ -63,7 +69,9 @@ namespace socialforms.Controllers {
                 {
                     _rep.Connect();
                     _qstrep.Connect();
-                    if (_rep.Insert(qstData.FormName))
+                    qstData.SForm.UserId = Convert.ToInt32(HttpContext.Session.GetInt32(curUserId));
+                    qstData.SForm.CreateDate = DateTime.Now;
+                    if (_rep.Insert(qstData.SForm))
                     {
                         foreach(Question q in qstData.Questions)
                         {

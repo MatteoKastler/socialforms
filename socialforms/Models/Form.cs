@@ -46,6 +46,11 @@ namespace socialforms.Models
         {
             throw new NotImplementedException();
         }
+        public String toString() {
+            return this.FormName + " " + this.UserId + " " + this.CreateDate;
+
     }
+    }
+    
 }
 

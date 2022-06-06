@@ -26,7 +26,7 @@ namespace socialforms.Controllers {
                 if (user == null) {
                     return RedirectToAction("Login");
                 } else {
-                    Debug.WriteLine(user.Username);
+                    Debug.WriteLine(HttpContext.Session.GetInt32(curUserId));
                     ViewBag.forms = _form.getForms(user.PersonId); // --> funzt alles super, da kommen forms raus und alles
                     foreach(Form f in ViewBag.forms) {
                         f.answers = _form.cntUseranswers(f.FormId);
@@ -102,7 +102,7 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-        const string curUserId = "-1";
+        const String curUserId = "-1";
         [HttpPost]
         public IActionResult Login(User userDataFromForm)
         {
@@ -117,6 +117,7 @@ namespace socialforms.Controllers {
             if (u != null)
             {
                 HttpContext.Session.SetInt32(curUserId, u.PersonId);
+                HttpContext.Items.Add("curUserId", u.PersonId);
                 return RedirectToAction("Index");
 
             } else {

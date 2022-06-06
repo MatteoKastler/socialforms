@@ -11,7 +11,7 @@ namespace socialforms.Models.DB.sql
 {
     public class FormQuery : IFormQuery {
 
-        private string _connString = "Server=localhost;Port=5040;Database=socialforms;uid=root;pwd=MBigubb75#"; //den muss ma anpassen an eigene Datenbank
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
         public bool Connect()
@@ -158,7 +158,7 @@ namespace socialforms.Models.DB.sql
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "INSERT into forms value(null, @userId, @formName, @createDate )";
+            cmdInsert.CommandText = "INSERT into forms value(null, @userId, @formName, @createDate)";
 
             DbParameter paramId = cmdInsert.CreateParameter();
             paramId.ParameterName = "userId";
@@ -179,6 +179,8 @@ namespace socialforms.Models.DB.sql
             cmdInsert.Parameters.Add(paramId);
             cmdInsert.Parameters.Add(paramName);
             cmdInsert.Parameters.Add(paramDate);
+
+            Debug.WriteLine(form.toString());
 
             return cmdInsert.ExecuteNonQuery() == 1;
         }

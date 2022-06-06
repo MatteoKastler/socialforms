@@ -7,7 +7,7 @@ namespace socialforms.Models
 {
     public class FormWithQuestions
     {
-        public Form FormName { get; set; }
+        public Form SForm { get; set; }
         public List<Question> Questions { get; set; } = new List<Question>();
     }
 }
