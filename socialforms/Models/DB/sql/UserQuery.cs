@@ -11,7 +11,7 @@ namespace socialforms.Models.DB
 {
     public class Userquery : IUsersquery
     {  
-        private string _connString = "Server=localhost;Port=3306;Database=socialforms;uid=root;pwd=MBigubb75#";
+        private string _connString = "Server=localhost;Port=5040;Database=socialforms;uid=root;pwd=MBigubb75#";
         DbConnection _conn;
 
 

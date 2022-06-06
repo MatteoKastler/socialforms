@@ -23,6 +23,7 @@ namespace socialforms.Controllers {
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
                 }
+                //else if()
                 else
                 {
                     return View();
@@ -40,12 +41,18 @@ namespace socialforms.Controllers {
 
         }
 
+        [HttpGet]
+        public IActionResult Insert()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Insert(FormWithQuestions qstData)
         {
             if(qstData == null)
             {
-                return RedirectToAction("InsertQst");
+                return RedirectToAction("Insert");
             }
 
             ValidateRegistrationData(qstData);
@@ -62,17 +69,17 @@ namespace socialforms.Controllers {
                         {
                             _qstrep.Insert(q);
                         }
-                        return View("_Message", new Message("Registrierung", "Ihre Daten wurden erfolgreich abgespeichert"));
+                        return View("_Message", new Message("Erstellen", "Ihre Daten wurden erfolgreich abgespeichert"));
                     }
                     else
                     {
-                        return View("_Message", new Message("Registrierung", "Bitte versuchen Sie es später erneut"));
+                        return View("_Message", new Message("Erstellen", "Bitte versuchen Sie es später erneut"));
                     }
 
                 }
                 catch (DbException)
                 {
-                    return View("_Message", new Message("Registrierung", "Datenbankfehler", "Bitte versuchen Sie es später erneut"));
+                    return View("_Message", new Message("Erstellen", "Datenbankfehler", "Bitte versuchen Sie es später erneut"));
                 }
                 finally
                 {
