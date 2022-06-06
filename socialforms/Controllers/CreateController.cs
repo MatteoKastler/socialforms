@@ -9,9 +9,11 @@ using socialforms.Models.DB.sql;
 using socialforms.Models.DB;
 
 namespace socialforms.Controllers {
-    public class CreateController : Controller {
+    public class CreateController : Controller
+    {
 
         private IFormQuery _rep = new FormQuery();
+        private IQuestionQuery _qstrep = new QuestionQuery();
         //private IQuestionQuery fQuestion = new QuestionQuery();
         public IActionResult Index()
         {
@@ -21,6 +23,7 @@ namespace socialforms.Controllers {
                 {
                     return View("_Message", new Message("Datenbankfehler", "Die Verbindung zur DB wurde nicht geöffnet", "Bitte versuchen Sie es später erneut!"));
                 }
+                //else if()
                 else
                 {
                     return View();
@@ -38,39 +41,50 @@ namespace socialforms.Controllers {
 
         }
 
-        [HttpPost]
-        public IActionResult Index(Form qstData)
+        [HttpGet]
+        public IActionResult Insert()
         {
-            if (qstData == null)
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Insert(FormWithQuestions qstData)
+        {
+            if(qstData == null)
             {
-                return RedirectToAction("Createform");
+                return RedirectToAction("Insert");
             }
 
             ValidateRegistrationData(qstData);
-
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     _rep.Connect();
-                    if (_rep.Insert(qstData))
+                    _qstrep.Connect();
+                    if (_rep.Insert(qstData.FormName))
                     {
-                        return View("_Message", new Message("Creation", "Ihr socialform wurde erfolgreich abgespeichert"));
+                        foreach(Question q in qstData.Questions)
+                        {
+                            _qstrep.Insert(q);
+                        }
+                        return View("_Message", new Message("Erstellen", "Ihre Daten wurden erfolgreich abgespeichert"));
                     }
                     else
                     {
-                        return View("_Message", new Message("Creation", "Bitte versuchen Sie es später erneut"));
+                        return View("_Message", new Message("Erstellen", "Bitte versuchen Sie es später erneut"));
                     }
 
                 }
                 catch (DbException)
                 {
-                    return View("_Message", new Message("Creation", "Datenbankfehler", "Bitte versuchen Sie es später erneut"));
+                    return View("_Message", new Message("Erstellen", "Datenbankfehler", "Bitte versuchen Sie es später erneut"));
                 }
                 finally
                 {
                     _rep.Disconnect();
+                    _qstrep.Disconnect();
                 }
 
 
@@ -79,17 +93,19 @@ namespace socialforms.Controllers {
             return View(qstData);
         }
 
-        private void ValidateRegistrationData(Form f)
+        private void ValidateRegistrationData(FormWithQuestions f)
         {
             if (f == null)
             {
                 return;
             }
         }
-
     }
 
+
+      
+   
+
+}
+
     
-
-
- }
