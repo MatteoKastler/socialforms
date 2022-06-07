@@ -142,6 +142,7 @@ namespace socialforms.Models.DB.sql
 
             getForm.Parameters.Add(paramId);
             getForm.Parameters.Add(paramText);
+            getForm.Parameters.Add(paramText);
             //Debug.WriteLine(Form.toString());
             using (DbDataReader reader = getForm.ExecuteReader())
             {

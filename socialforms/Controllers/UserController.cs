@@ -136,9 +136,6 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-
-
-
         private void ValidateRegistrationData(User u)
         {
             if (u == null)
