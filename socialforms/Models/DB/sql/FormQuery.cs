@@ -128,11 +128,11 @@ namespace socialforms.Models.DB.sql
                 return null;
             }
             DbCommand getForm = this._conn.CreateCommand();
-            getForm.CommandText = "SELECT * from forms WHERE text = @text and userId = @userId";
+            getForm.CommandText = "SELECT * from forms WHERE formName = @formName and userId = @userId";
 
             DbParameter paramText = getForm.CreateParameter();
-            paramText.ParameterName = "text";
-            paramText.DbType = DbType.Int32;
+            paramText.ParameterName = "formName";
+            paramText.DbType = DbType.String;
             paramText.Value = text;
 
             DbParameter paramId = getForm.CreateParameter();
@@ -142,7 +142,6 @@ namespace socialforms.Models.DB.sql
 
             getForm.Parameters.Add(paramId);
             getForm.Parameters.Add(paramText);
-            //Debug.WriteLine(Form.toString());
             using (DbDataReader reader = getForm.ExecuteReader())
             {
                 reader.Read();
@@ -153,8 +152,10 @@ namespace socialforms.Models.DB.sql
                     FormName = Convert.ToString(reader["formName"]),
                     CreateDate = Convert.ToDateTime(reader["createDate"])
                 };
+                Debug.WriteLine(temp.toString());
                 return temp;
             }
+            
         }
 
         public List<Form> getForms(int userId) {

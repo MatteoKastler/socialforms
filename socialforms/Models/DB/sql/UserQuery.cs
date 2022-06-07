@@ -143,7 +143,7 @@ namespace socialforms.Models.DB
             paramGender.DbType = DbType.Int32;
             paramGender.Value = user.Gender;
 
-            cmdInsert.Parameters.Add(paramUN)   ;
+            cmdInsert.Parameters.Add(paramUN);
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBDate);
             cmdInsert.Parameters.Add(paramEMail);
