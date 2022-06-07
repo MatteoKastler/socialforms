@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace socialforms.Models.DB.sql {
     public class QuestionQuery : IQuestionQuery {
-        private string _connString = "Server=localhost;Port=3306;Database=socialforms;uid=root;pwd=MBigubb75#";
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
         public void Connect() {
@@ -77,27 +77,28 @@ namespace socialforms.Models.DB.sql {
             }
             DbCommand cmdInsert = this._conn.CreateCommand();
 
-            cmdInsert.CommandText = "INSERT into questions value(null, @formId, @text, @qsttype)";
-
+            cmdInsert.CommandText = "INSERT into questions value(null, @formId, @qtext, @qsttype)";
+            Debug.WriteLine(q.toString());
             DbParameter paramId = cmdInsert.CreateParameter();
             paramId.ParameterName = "formId";
             paramId.DbType = DbType.Int32;
             paramId.Value = q.FormId;
 
             DbParameter paramText = cmdInsert.CreateParameter();
-            paramText.ParameterName = "text";
+            paramText.ParameterName = "qtext";
             paramText.DbType = DbType.String;
             paramText.Value = q.Qtext;
 
             DbParameter paramType = cmdInsert.CreateParameter();
             paramType.ParameterName = "qsttype";
-            paramType.DbType = DbType.Date;
+            paramType.DbType = DbType.Int32;
             paramType.Value = q.QuestionType;
 
 
             cmdInsert.Parameters.Add(paramId);
             cmdInsert.Parameters.Add(paramType);
             cmdInsert.Parameters.Add(paramText);
+
 
             return cmdInsert.ExecuteNonQuery() == 1;
         }

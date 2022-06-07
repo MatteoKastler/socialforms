@@ -11,7 +11,7 @@ namespace socialforms.Models.DB
 {
     public class Userquery : IUsersquery
     {  
-        private string _connString = "Server=localhost;Port=3306;Database=socialforms;uid=root;pwd=MBigubb75#";
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
 
@@ -143,7 +143,7 @@ namespace socialforms.Models.DB
             paramGender.DbType = DbType.Int32;
             paramGender.Value = user.Gender;
 
-            cmdInsert.Parameters.Add(paramUN)   ;
+            cmdInsert.Parameters.Add(paramUN);
             cmdInsert.Parameters.Add(paramPWD);
             cmdInsert.Parameters.Add(paramBDate);
             cmdInsert.Parameters.Add(paramEMail);

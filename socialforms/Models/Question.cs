@@ -60,7 +60,7 @@ namespace socialforms.Models
 
         public String toString()
         {
-            return this.FormId + " " + this.Qtext;
+            return this.FormId==null?"-1":this.FormId+" "+this.Qtext + " " + this.QuestionType;
 
         }
 
