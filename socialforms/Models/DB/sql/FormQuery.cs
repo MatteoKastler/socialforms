@@ -120,6 +120,43 @@ namespace socialforms.Models.DB.sql
                 return temp;
             }
         }
+
+        public Form findByName(String text, int userId)
+        {
+            if ((this._conn == null) || (this._conn.State != ConnectionState.Open))
+            {
+                return null;
+            }
+            DbCommand getForm = this._conn.CreateCommand();
+            getForm.CommandText = "SELECT * from forms WHERE text = @text and userId = @userId";
+
+            DbParameter paramText = getForm.CreateParameter();
+            paramText.ParameterName = "text";
+            paramText.DbType = DbType.Int32;
+            paramText.Value = text;
+
+            DbParameter paramId = getForm.CreateParameter();
+            paramId.ParameterName = "userId";
+            paramId.DbType = DbType.Int32;
+            paramId.Value = userId;
+
+            getForm.Parameters.Add(paramId);
+            getForm.Parameters.Add(paramText);
+            //Debug.WriteLine(Form.toString());
+            using (DbDataReader reader = getForm.ExecuteReader())
+            {
+                reader.Read();
+                Form temp = new Form
+                {
+                    FormId = Convert.ToInt32(reader["formId"]),
+                    UserId = Convert.ToInt32(reader["userId"]),
+                    FormName = Convert.ToString(reader["formName"]),
+                    CreateDate = Convert.ToDateTime(reader["createDate"])
+                };
+                return temp;
+            }
+        }
+
         public List<Form> getForms(int userId) {
             List<Form> forms = new List<Form>();
 
