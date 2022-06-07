@@ -61,7 +61,7 @@ namespace socialforms.Controllers {
                 return RedirectToAction("Insert");
             }
 
-            ValidateRegistrationData(qstData);
+            ValidateData(qstData);
 
             if (ModelState.IsValid)
             {
@@ -73,9 +73,14 @@ namespace socialforms.Controllers {
                     qstData.SForm.CreateDate = DateTime.Now;
                     if (_rep.Insert(qstData.SForm))
                     {
-                        foreach(Question q in qstData.Questions)
-                        {
-                            _qstrep.Insert(q);
+                        int formId = qstData.SForm.FormId;
+                        foreach (String s in qstData.QstList)
+                        { 
+                            Question qst = new Question();
+                            qst.Qtext = s;
+                            qst.FormId = formId;
+                            qst.QuestionType = 1;
+                            _qstrep.Insert(qst);
                         }
                         return View("_Message", new Message("Erstellen", "Ihre Daten wurden erfolgreich abgespeichert"));
                     }
@@ -101,7 +106,7 @@ namespace socialforms.Controllers {
             return View(qstData);
         }
 
-        private void ValidateRegistrationData(FormWithQuestions f)
+        private void ValidateData(FormWithQuestions f)
         {
             if (f == null)
             {

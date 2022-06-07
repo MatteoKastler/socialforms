@@ -8,6 +8,8 @@ namespace socialforms.Models
     public class FormWithQuestions
     {
         public Form SForm { get; set; }
-        public List<Question> Questions { get; set; } = new List<Question>();
+        public List<String> QstList { get; set; } = new List<String>();
+
+        public Question Qtext { get; set; }
     }
 }

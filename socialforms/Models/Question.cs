@@ -39,6 +39,25 @@ namespace socialforms.Models
 
         public int QuestionType { get; set; }
 
+        public Question(String text)
+        {
+            this.Qtext = text;
+        }
+
+        public Question(int qstId, int formId, String qtext, int questionType)
+        {
+            this.QuestionId = qstId;
+            this.FormId = formId;
+            this.Qtext = qtext;
+            this.QuestionType = questionType;
+
+        }
+
+        public Question()
+        {
+
+        }
+
 
 
 

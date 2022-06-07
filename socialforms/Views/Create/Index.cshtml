@@ -29,12 +29,22 @@
                 <br />
             </div>
 
+            @*<div id="inputFormRow">
+                <div class="input-group mb-3">
+                    <label asp-for="QstList"></label>
+                    <span asp-validation-for="QstList"></span>
+                    <input type="text" asp-for="QstList" class="form-control m-input" placeholder="Type in a Question" autocomplete="off">
+                    <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                </div>
+            </div>*@
+
             <div id="questions"></div>
 
             <button id="addRow" type="button" class="btn btn-info">New Text-Question</button>
             <button id="slider" type="button" class="btn btn-info">New Slider</button><br />
 
             <p>
+                <br />
                 <input type="submit" value="absenden" />
                 <input type="reset" value="abbrechen" />
             </p>
@@ -48,8 +58,10 @@
             var html = '';
             html += '<div id="inputFormRow">';
             html += '<div class="input-group mb-3">';
-            html += '<input type="text" name="Questions" class="form-control m-input" placeholder="Enter title" autocomplete="off">';
-            html += '<div class="input-group-append">';
+            //html += '<label asp-for="QstList"></label>'
+            //html += '<span asp-validation-for="QstList"></span>'
+            //html += '<input type="text" asp-for="QstList" class="form-control m-input" placeholder="Type in a Question" autocomplete="off">';
+            html += '<input type="text" name="QstList" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
             html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
             html += '</div>';
             html += '</div>';
@@ -62,7 +74,7 @@
             sl += '<div id="inputFormRow">';
             sl += '<div class="input-group mb-3">';
             sl += '<div class="slidecontainer">';
-            sl += '<input type="text" name="Questionss" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
+            sl += '<input type="text" name="Questions" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
             sl += '<input type="range" min="1" max="100" value="50" class="slider" id="myRange">';
             sl += '</div>';
             sl += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
