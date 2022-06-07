@@ -12,6 +12,7 @@ namespace socialforms.Models.DB
         // Verbindung zur DB beenden
         void Disconnect();
         Form getForm(int formId);
+        Form findByName(String text, int userId);
         List<Form> getForms(int userId);
         bool Insert(Form form);
         bool Delete(int formId);

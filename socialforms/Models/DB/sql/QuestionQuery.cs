@@ -70,6 +70,7 @@ namespace socialforms.Models.DB.sql {
             }
         }
 
+
         public bool Insert(Question q) {
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return false;

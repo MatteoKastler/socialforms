@@ -58,6 +58,11 @@ namespace socialforms.Models
 
         }
 
+        public String toString()
+        {
+            return this.FormId + " " + this.Qtext;
+
+        }
 
 
 

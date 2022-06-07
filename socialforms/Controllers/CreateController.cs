@@ -69,16 +69,17 @@ namespace socialforms.Controllers {
                 {
                     _rep.Connect();
                     _qstrep.Connect();
+                    int userId = Convert.ToInt32(HttpContext.Session.GetInt32(curUserId));
                     qstData.SForm.UserId = Convert.ToInt32(HttpContext.Session.GetInt32(curUserId));
                     qstData.SForm.CreateDate = DateTime.Now;
+                    //int id = qstData.SForm.FormId;
                     if (_rep.Insert(qstData.SForm))
-                    {
-                        int formId = qstData.SForm.FormId;
+                    { 
                         foreach (String s in qstData.QstList)
                         { 
                             Question qst = new Question();
                             qst.Qtext = s;
-                            qst.FormId = formId;
+                            qst.FormId = _rep.findByName(s, userId).FormId;
                             qst.QuestionType = 1;
                             _qstrep.Insert(qst);
                         }
