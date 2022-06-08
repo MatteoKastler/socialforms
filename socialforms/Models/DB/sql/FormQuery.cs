@@ -81,6 +81,7 @@ namespace socialforms.Models.DB.sql
         }
 
         public bool Delete(int formId) {
+            Debug.WriteLine(formId);
             if ((this._conn == null) || (this._conn.State != ConnectionState.Open)) {
                 return false;
             }
@@ -92,7 +93,6 @@ namespace socialforms.Models.DB.sql
             paramId.DbType = DbType.Int32;
             paramId.Value = formId;
             cmdDelete.Parameters.Add(paramId);
-
             return cmdDelete.ExecuteNonQuery() == 1;
         }
 

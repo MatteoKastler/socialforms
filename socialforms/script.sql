@@ -11,7 +11,7 @@
 --    userDescription VARCHAR(1024),
 --    picture MEDIUMBLOB,
 
---    PRIMARY KEY (userId))
+--    PRIMARY KEY (userId)
 --);
 
 --CREATE TABLE forms(
@@ -21,7 +21,7 @@
 --    createDate DATE NOT NULL,
 
 --    PRIMARY KEY(formId),
---    FOREIGN KEY(userId) REFERENCES users(userId)
+--    FOREIGN KEY(userId) REFERENCES users(userId) On delete Cascade
 --);
 
 --CREATE TABLE questions(
@@ -31,7 +31,7 @@
 --    questionType INT NOT NULL,
 
 --    PRIMARY KEY(questionId),
---    FOREIGN KEY(formId) REFERENCES forms(formId)
+--    FOREIGN KEY(formId) REFERENCES forms(formId) On delete Cascade
 --);
 
 --CREATE TABLE answers(
@@ -42,6 +42,6 @@
 --    choiceAnswer INT,
     
 --    PRIMARY KEY(answerId),
---    FOREIGN KEY(questionId) REFERENCES questions(questionId),
---    FOREIGN KEY(userId) REFERENCES answers(answerId)*/
+--    FOREIGN KEY(questionId) REFERENCES questions(questionId) On delete Cascade,
+--    FOREIGN KEY(userId) REFERENCES answers(answerId) On delete Cascade
 --);
