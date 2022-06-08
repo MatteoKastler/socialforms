@@ -20,7 +20,7 @@
                 <div class="col-lg-12">
                     <div id="qstType">
                         <div class="input-group mb-3">
-                            <label asp-for="SForm.FormName"></label>
+                            <label asp-for="SForm.FormName"></label> <br />
                             <span asp-validation-for="SForm.FormName"></span>
                             <input type="text" asp-for="SForm.FormName" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
                         </div>
@@ -58,9 +58,6 @@
             var html = '';
             html += '<div id="inputFormRow">';
             html += '<div class="input-group mb-3">';
-            //html += '<label asp-for="QstList"></label>'
-            //html += '<span asp-validation-for="QstList"></span>'
-            //html += '<input type="text" asp-for="QstList" class="form-control m-input" placeholder="Type in a Question" autocomplete="off">';
             html += '<input type="text" name="QstList" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
             html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
             html += '</div>';
