@@ -54,7 +54,7 @@ namespace socialforms.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Insert(FormWithQuestions qstData)
+        public async Task<IActionResult> InsertAsync(FormWithQuestions qstData)
         {
             if(qstData == null)
             {
@@ -68,7 +68,7 @@ namespace socialforms.Controllers {
                 try
                 {
                     _rep.Connect();
-                    _qstrep.Connect();
+                    await _qstrep.ConnectAsync();
                     int userId = Convert.ToInt32(HttpContext.Session.GetInt32(curUserId));
                     qstData.SForm.UserId = Convert.ToInt32(HttpContext.Session.GetInt32(curUserId));
                     qstData.SForm.CreateDate = DateTime.Now;
@@ -98,7 +98,7 @@ namespace socialforms.Controllers {
                 finally
                 {
                     _rep.Disconnect();
-                    _qstrep.Disconnect();
+                    await _qstrep.DisconnectAsync();
                 }
 
 

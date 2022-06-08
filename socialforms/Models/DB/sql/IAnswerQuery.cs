@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace socialforms.Models.DB.sql {
     interface IAnswerQuery {
         // zur DB verbinden
-        void Connect();
+        Task ConnectAsync();
         // Verbindung zur DB beenden
-        void Disconnect();
+        Task DisconnectAsync();
         bool Insert(Answer a);
         bool delete(int answId);
         Answer getAnswer(int answId);

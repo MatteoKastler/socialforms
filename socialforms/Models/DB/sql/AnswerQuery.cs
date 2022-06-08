@@ -12,20 +12,20 @@ namespace socialforms.Models.DB.sql {
         private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
-        public void Connect() {
+        public async Task ConnectAsync() {
             if (this._conn == null) {
                 this._conn = new MySqlConnection(this._connString);
                 Debug.WriteLine("connection has been created");
             }
             if (this._conn.State != System.Data.ConnectionState.Open) {
-                this._conn.Open();
+                await this._conn.OpenAsync();
                 Debug.WriteLine("state has been set to open");
             }
         }
 
-        public void Disconnect() {
+        public async Task DisconnectAsync() {
             if ((this._conn != null) && (this._conn.State == System.Data.ConnectionState.Open)) {
-                this._conn.Close();
+                await this._conn.CloseAsync();
             }
         }
         public bool delete(int answId) {
