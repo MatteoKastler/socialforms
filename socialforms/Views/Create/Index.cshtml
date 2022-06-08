@@ -19,8 +19,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div id="qstType">
-                        <div class="input-group mb-3">
-                            <label asp-for="SForm.FormName"></label>
+                        <div class="input-group mb-3"
                             <span asp-validation-for="SForm.FormName"></span>
                             <input type="text" asp-for="SForm.FormName" class="form-control m-input" placeholder="Pick a form-name" autocomplete="off">
                         </div>
@@ -61,7 +60,7 @@
             //html += '<label asp-for="QstList"></label>'
             //html += '<span asp-validation-for="QstList"></span>'
             //html += '<input type="text" asp-for="QstList" class="form-control m-input" placeholder="Type in a Question" autocomplete="off">';
-            html += '<input type="text" name="QstList" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
+            html += '<input type="text" name="QstList" class="form-control m-input" placeholder="Enter Text-Questions" autocomplete="off"><br />'
             html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
             html += '</div>';
             html += '</div>';
@@ -74,7 +73,7 @@
             sl += '<div id="inputFormRow">';
             sl += '<div class="input-group mb-3">';
             sl += '<div class="slidecontainer">';
-            sl += '<input type="text" name="Questions" class="form-control m-input" placeholder="Enter title" autocomplete="off"><br />'
+            sl += '<input type="text" name="Questions" class="form-control m-input" placeholder="Enter Slider-Question" autocomplete="off"><br />'
             sl += '<input type="range" min="1" max="100" value="50" class="slider" id="myRange">';
             sl += '</div>';
             sl += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';

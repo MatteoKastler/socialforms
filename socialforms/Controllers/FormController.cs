@@ -19,7 +19,7 @@ namespace socialforms.Controllers
             try
             {
                 _rep.Connect();
-                if (_rep.Delete(id))
+                if (!_rep.Delete(id))
                 {
                     return View("_Message", new Message("Delete", "Form konnte nicht gelöscht werden"));
                 }
