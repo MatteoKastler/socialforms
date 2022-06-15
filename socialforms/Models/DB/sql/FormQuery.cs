@@ -11,7 +11,7 @@ namespace socialforms.Models.DB.sql
 {
     public class FormQuery : IFormQuery {
 
-        private string _connString = "Server=localhost;Port=3306;Database=socialforms;uid=root;pwd=MBigubb75#";
+        private string _connString = "Server=localhost;Port=3308;Database=socialforms;uid=root;pwd=toor";
         DbConnection _conn;
 
         public bool Connect()
@@ -86,7 +86,7 @@ namespace socialforms.Models.DB.sql
                 return false;
             }
             DbCommand cmdDelete = this._conn.CreateCommand();
-            cmdDelete.CommandText = "DELETE from forms WHERE formId = @formId;";
+            cmdDelete.CommandText = "DELETE from forms WHERE formId = @formId";
 
             DbParameter paramId = cmdDelete.CreateParameter();
             paramId.ParameterName = "formId";

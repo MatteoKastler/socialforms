@@ -25,7 +25,7 @@ namespace socialforms.Controllers
                 }
                 else
                 {
-                    return View("_Message", new Message("Delete", "Erfolgreich gelöscht"));
+                    return RedirectToAction("Index", "User");
                 }
 
             }

@@ -121,7 +121,7 @@ namespace socialforms.Controllers {
                 return RedirectToAction("Index");
 
             } else {
-                return View("_Message", new Message("Login", "Daten konnten nicht geprüft werde"));
+                return View("_Message", new Message("Login", "Úser existiert nicht"));
             }
             
         }
