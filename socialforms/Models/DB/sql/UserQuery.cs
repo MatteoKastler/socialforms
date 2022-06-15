@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace socialforms.Models.DB
 {
@@ -249,6 +250,49 @@ namespace socialforms.Models.DB
                 }
                 return builder.ToString();
             }
-        }   
+        }
+
+        public async Task<bool> CheckUsernameAsync(string username)
+        {
+            User u = new User();
+           
+            if ((this._conn == null) && (this._conn.State != ConnectionState.Open))
+            {
+                return true;
+            }
+
+            DbCommand cmdGetUser = this._conn.CreateCommand();
+            cmdGetUser.CommandText = "select * from user where userName=@username;";
+
+            DbParameter paramEM = cmdGetUser.CreateParameter();
+            paramEM.ParameterName = "username";
+            paramEM.DbType = DbType.String;
+            paramEM.Value = username;
+
+            cmdGetUser.Parameters.Add(paramEM);
+
+            using (DbDataReader reader = await cmdGetUser.ExecuteReaderAsync())
+            {
+
+                if (await reader.ReadAsync())
+                {
+                    u.PersonId = Convert.ToInt32(reader["userId"]);
+                    u.Username = Convert.ToString(reader["userName"]);
+                    u.Email = Convert.ToString(reader["email"]);
+                    u.Password = Convert.ToString(reader["password"]);
+                    u.Birthdate = Convert.ToDateTime(reader["birthdate"]);
+                }
+            }
+
+            if (u.Username == null || u.Username.Equals(""))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            
+    }
     }
 }

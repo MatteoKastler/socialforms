@@ -147,3 +147,7 @@ div.absolute {
     opacity: 1;
     right: 0;
 }
+
+.redBorder {
+    border: 2px solid red;
+}

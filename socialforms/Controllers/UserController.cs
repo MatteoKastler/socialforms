@@ -61,7 +61,7 @@ namespace socialforms.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Registration(User userDataFromForm)
+        public async Task<IActionResult> Registration(User userDataFromForm)
         {
 
             if (userDataFromForm == null)
@@ -69,7 +69,7 @@ namespace socialforms.Controllers {
                 return RedirectToAction("Registration");
             }
 
-            ValidateRegistrationData(userDataFromForm);
+            await ValidateRegistrationData(userDataFromForm);
 
 
             if (ModelState.IsValid)
@@ -136,12 +136,58 @@ namespace socialforms.Controllers {
             return View(userDataFromForm);
         }
 
-        private void ValidateRegistrationData(User u)
+        public async Task<IActionResult> CheckUsername(String username)
+        {
+
+            //if (username == "paula")
+            //{
+            //    // der übergebene Wert/Instanz wird ins JSON-Format 
+            //    //      konvertiert
+            //    //  es ist natürlich auch möglich, z.B. eine Instanz von
+            //    //      User nach JSON zu konvertieren
+            //    return new JsonResult(true);
+            //}
+            //else
+            //{
+            //    return new JsonResult(false);
+            //}
+            try
+            {
+                _rep.Connect();
+
+                bool vorhanden = await _rep.CheckUsernameAsync(username);
+
+                if (!vorhanden)
+                {
+                    return new JsonResult(false);
+                }
+                else
+                {
+                    return new JsonResult(true);
+                }
+            }
+            catch (DbException e)
+            {
+                return View("_Message", new Message("Registrierung", e.StackTrace, "Bitte versuchen Sie es später erneut!"));
+            }
+            finally
+            {
+                _rep.Disconnect();
+            }
+        }
+
+        private async Task ValidateRegistrationData(User u )
         {
             if (u == null)
             {
                 return;
             }
+
+            //_rep.Connect();
+            //if (await _rep.CheckUsernameAsync(u.Username))
+            //{
+            //    ModelState.AddModelError("Username", "Dieser Name ist bereits vergeben! Bitte einen anderen wählen!");
+            //}
 
             //Username
             if ((u.Username == null) || (u.Username.Trim().Length < 4))

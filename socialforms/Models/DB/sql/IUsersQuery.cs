@@ -17,6 +17,7 @@ namespace socialforms.Models.DB
         bool Insert(User user);
         bool Delete(int userId);
         User GetUser(int userId);
+        Task<bool> CheckUsernameAsync(string unsername);
         List<User> GetAllUsers();
         bool Update(int userId, User newUserData);
 
